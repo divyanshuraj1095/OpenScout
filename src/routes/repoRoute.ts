@@ -1,5 +1,6 @@
 import express from "express"
 import axios from "axios"
+import prisma from "../config/db";
 
 const repoRouter = express.Router();
 
@@ -22,11 +23,43 @@ repoRouter.post("/repo", async (req, res)=>{
         const issues = response.data.filter(
             (item : any) => !item.pull_request
         )
-        console.log(issues);
+        console.log(issues.length)
+
+        const existingRepo = await prisma.repository.findFirst({
+            where:{
+                repoName,
+                ownerName : owner
+            }
+        });
+
+        if(existingRepo){
+            throw new Error("Repository already exists!!");
+        }
+
+        const savedRepo = await prisma.repository.create({
+            data : {
+                repoName : repoName,
+                ownerName : owner,
+                url : repoUrl
+            }
+        });
+
+        for(const issue of issues){
+
+            await prisma.issue.create({
+                data : {
+                    gitHubIssueId : issue.id,
+                    title         : issue.title,
+                    description   : issue.description,
+                    labels        : issue.labels.map((label: any) => label.name),
+                    repositoryId  : savedRepo.id
+                }
+            })
+        }
 
         res.json({
-            message : "Github user and reponame fetched successfully",
-            data : issues
+            message : "Repository Added Successfully!!",
+            data : issues.length
         })
     }
     catch(err : any){
@@ -35,5 +68,8 @@ repoRouter.post("/repo", async (req, res)=>{
         });
     }
 });
+
+repoRouter.get("/getrepo", async(req, res)=>{
+})
 
 export default repoRouter

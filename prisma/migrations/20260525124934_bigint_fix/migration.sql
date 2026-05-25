@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Issue" ALTER COLUMN "gitHubIssueId" SET DATA TYPE BIGINT;
