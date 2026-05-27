@@ -69,7 +69,63 @@ repoRouter.post("/repo", async (req, res)=>{
     }
 });
 
-repoRouter.get("/getrepo", async(req, res)=>{
-})
+repoRouter.get("/issues", async(req, res)=>{
+    try{
+       const {label, difficulty, language} = req.query; 
+       const whereClause:any = {};
+       if(difficulty){
+        whereClause.difficulty = difficulty;
+       }
+       if(label){
+        whereClause.labels = {
+           has: label
+        };
+       }
+       if(language){
+        whereClause.repository = {
+            language : language
+        };
+       }
+       const issues = await prisma.issue.findMany({
+        where: whereClause,
+        include :{
+            repository : true
+        }
+       });
+       res.json({
+        message : "Issues fetched successfully",
+        data : issues
+       });
+    }
+    catch(err:any){
+       res.status(400).json({
+        message : "Error: "+err.message
+       });
+    }
+});
+
+repoRouter.get("/issue/:id", async(req, res)=>{
+    try{
+       const id = Number(req.params);
+
+       const issues = await prisma.issue.findFirst({
+        where : {
+            id
+        },
+        include :{
+            repository : true
+        }
+       });
+
+       res.json({
+        message : "Issue fetched Successfully"
+       })
+    }
+    catch(err:any){
+        res.status(400).json({
+            message : "Error: "+err.message
+        });
+    }
+});
 
 export default repoRouter
