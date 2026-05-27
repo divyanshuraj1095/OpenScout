@@ -86,6 +86,7 @@ repoRouter.get("/issues", async(req, res)=>{
             language : language
         };
        }
+
        const issues = await prisma.issue.findMany({
         where: whereClause,
         include :{
@@ -93,9 +94,17 @@ repoRouter.get("/issues", async(req, res)=>{
         }
        });
        res.json({
-        message : "Issues fetched successfully",
-        data : issues
-       });
+         message: "Issues fetched successfully",
+         data: JSON.parse(
+         JSON.stringify(
+           issues,
+           (_, value) =>
+            typeof value === "bigint"
+               ? value.toString()
+               : value
+      )
+   )
+});
     }
     catch(err:any){
        res.status(400).json({
@@ -106,7 +115,7 @@ repoRouter.get("/issues", async(req, res)=>{
 
 repoRouter.get("/issue/:id", async(req, res)=>{
     try{
-       const id = Number(req.params);
+       const id = Number(req.params.id);
 
        const issues = await prisma.issue.findFirst({
         where : {
@@ -127,5 +136,29 @@ repoRouter.get("/issue/:id", async(req, res)=>{
         });
     }
 });
+
+repoRouter.get("/repo/:id/issues", async(req, res)=>{
+
+    try{
+        const id = Number(req.params.id);
+
+        const repoIssues = await prisma.issue.findMany({
+            where:{
+                repositoryId : id,
+            }
+        });
+
+        res.json({
+            message : "Issues fetched for Current Repo",
+            data : repoIssues
+        });
+    }
+    catch(err:any){
+        res.status(400).json({
+            message : "Error :"+err.message
+        });
+    } 
+});
+
 
 export default repoRouter
