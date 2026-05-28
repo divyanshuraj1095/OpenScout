@@ -18,7 +18,7 @@ repoRouter.post("/repo", async (req, res)=>{
         const repoName = part[4];
 
         const response = await axios.get(
-            `https://api.github.com/repos/${owner}/${repoName}/issues`
+            `https://api.github.com/repos/${owner}/${repoName}/issues?state=open&per_page=100`
         )
 
         const issues = response.data.filter(
@@ -152,15 +152,37 @@ repoRouter.get("/repo/:id/issues", async(req, res)=>{
         });
 
         res.json({
-            message : "Issues fetched for Current Repo",
-            data : repoIssues
-        });
+             message: "Issues fetched for Current Repo",
+            data: JSON.parse(
+                JSON.stringify(
+                    repoIssues,
+                    (_, value) =>
+                    typeof value === "bigint"
+                    ? value.toString()
+                    : value
+                )
+            )
+            });
     }
     catch(err:any){
         res.status(400).json({
             message : "Error :"+err.message
         });
     } 
+});
+
+repoRouter.get("/repos", async(req, res)=>{
+    try{
+      const repos = await prisma.repository.findMany();
+      res.json({
+        data : repos,
+      });
+    }
+    catch(err : any){
+        res.status(400).json({
+            message : "Error : "+err.message
+        });
+    }   
 });
 
 
