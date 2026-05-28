@@ -1,6 +1,7 @@
 import express from "express"
 import axios from "axios"
 import prisma from "../config/db";
+import { classifyDifficulty } from "../utils/classifyDifficulty";
 
 const repoRouter = express.Router();
 
@@ -52,6 +53,8 @@ repoRouter.post("/repo", async (req, res)=>{
                     title         : issue.title,
                     description   : issue.description,
                     labels        : issue.labels.map((label: any) => label.name),
+                    difficulty    : classifyDifficulty(
+                        issue.labels.map((label:any)=> label.name)),
                     repositoryId  : savedRepo.id
                 }
             })
