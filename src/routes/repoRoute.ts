@@ -21,6 +21,10 @@ repoRouter.post("/repo", async (req, res)=>{
             `https://api.github.com/repos/${owner}/${repoName}/issues?state=open&per_page=100`
         )
 
+        const repoResponse = await axios.get(
+            `https://api.github.com/repos/${owner}/${repoName}`
+        );
+
         const issues = response.data.filter(
             (item : any) => !item.pull_request
         )
@@ -41,7 +45,10 @@ repoRouter.post("/repo", async (req, res)=>{
             data : {
                 repoName : repoName,
                 ownerName : owner,
-                url : repoUrl
+                url : repoUrl,
+                stars     : repoResponse.data.stargazers_count,
+                language  : repoResponse.data.language,
+                description : repoResponse.data.description
             }
         });
 
@@ -51,7 +58,7 @@ repoRouter.post("/repo", async (req, res)=>{
                 data : {
                     gitHubIssueId : issue.id,
                     title         : issue.title,
-                    description   : issue.description,
+                    description   : issue.body,
                     labels        : issue.labels.map((label: any) => label.name),
                     difficulty    : classifyDifficulty(
                         issue.labels.map((label:any)=> label.name)),
@@ -160,8 +167,8 @@ repoRouter.get("/repo/:id/issues", async(req, res)=>{
                     typeof value === "bigint"
                     ? value.toString()
                     : value
+                    )
                 )
-            )
             });
     }
     catch(err:any){

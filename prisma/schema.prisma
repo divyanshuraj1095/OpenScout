@@ -19,6 +19,7 @@ model Repository {
   url       String
   stars     Int?
   language  String?
+  description String?
 
   issues    Issue[]
 }
