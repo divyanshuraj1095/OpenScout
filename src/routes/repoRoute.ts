@@ -192,5 +192,38 @@ repoRouter.get("/repos", async(req, res)=>{
     }   
 });
 
+repoRouter.get("/search", async(req, res)=>{
+    try{
+
+       const {q} = req.query; 
+       if(!q){
+        throw new Error("Search Query is required!!");
+       }
+       const issues = await prisma.issue.findMany({
+        where:{
+            title : {
+                contains : q as string,
+
+                mode : "insensitive"
+            },
+            description :{
+                contains : q as string,
+                mode : "insensitive"
+            }
+        }
+       });
+
+       res.json({
+        message : "Search Results",
+        data : issues
+       })
+    }
+    catch(err:any){
+       res.status(400).json({
+        message : "Error : "+err.message
+       })
+    }
+});
+
 
 export default repoRouter
