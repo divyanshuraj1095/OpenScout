@@ -1,5 +1,7 @@
 import express from "express";
 import prisma from "../config/db";
+import { explainIssue } from "../services/groqService";
+import { buildIssuePrompt } from "../prompt/explainIssuePrompt";
 const aiRouter = express.Router();
 
 aiRouter.get("/explain/:id", async(req, res)=>{
@@ -18,29 +20,18 @@ aiRouter.get("/explain/:id", async(req, res)=>{
            throw new Error("Issue not found");
         }
 
-        const prompt = `
-            Repository: ${thisIssue.repository.repoName}
-
-            Issue Title:
-                ${thisIssue.title}
-
-            Issue Description:
-                ${thisIssue.description}
-
-            Explain this issue in simple terms.
-            Tell me:
-            1. What the problem is.
-            2. Skills needed.
-            3. Whether it is beginner, intermediate or advanced.
-            `;
+        const prompt = buildIssuePrompt(thisIssue.title, thisIssue.description || "");
+        const explanation = await explainIssue(prompt);
+        res.json({
+            message : "Issue explained successfully!!",
+            data : explanation
+        })
     }
     catch(err:any){
         res.json({
             message : "Error: "+err.message
         })
-    }
-    
-
+    }  
 });
 
 export default aiRouter;
