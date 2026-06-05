@@ -35,4 +35,33 @@ authRouter.post("/signup", async(req, res)=>{
     
 });
 
+authRouter.post("/login", async(req, res)=>{
+    try{
+        const {email, password} = req.body;
+
+        if(!email || !password){
+           throw new Error("Please enter values!!");
+        }
+
+        const logUser = await prisma.user.findFirst({
+            where : {
+                email : email
+            }
+        });
+        if(!logUser){
+            throw new Error("User not found");
+        }
+
+        res.json({
+            message : "Loggin Successful"
+        })
+    }
+    catch(err : any){
+        res.json({
+            messsage : "Error: "+err.message
+        })
+    }
+    
+})
+
 export default authRouter;
