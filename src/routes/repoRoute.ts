@@ -81,6 +81,9 @@ repoRouter.post("/repo", async (req, res)=>{
 
 repoRouter.get("/issues", async(req, res)=>{
     try{
+
+       const page = Number(req.query.page) || 1;
+       const limit = Number(req.query.limit) || 10;
        const {label, difficulty, language} = req.query; 
        const whereClause:any = {};
        if(difficulty){
@@ -97,13 +100,22 @@ repoRouter.get("/issues", async(req, res)=>{
         };
        }
 
+       const totalIssues = await prisma.issue.count({
+         where: whereClause
+       });
+
        const issues = await prisma.issue.findMany({
         where: whereClause,
         include :{
             repository : true
-        }
+        },
+        skip : (page-1)*limit,
+        take : limit
        });
        res.json({
+         currentPage: page,
+         totalPages: Math.ceil(totalIssues/limit),
+         totalIssues,
          message: "Issues fetched successfully",
          data: JSON.parse(
          JSON.stringify(
