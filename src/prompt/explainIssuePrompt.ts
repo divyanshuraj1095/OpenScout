@@ -9,6 +9,7 @@ Provide:
 2. Skills required
 3. Why this issue exists
 4. Difficulty (Beginner/Intermediate/Advanced)
+5. First Step
 
 Issue Title:
 ${title}

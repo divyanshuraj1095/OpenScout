@@ -22,6 +22,10 @@ aiRouter.get("/explain/:id", async(req, res)=>{
 
         const prompt = buildIssuePrompt(thisIssue.title, thisIssue.description || "");
         const explanation = await explainIssue(prompt);
+        if(!explanation){
+          throw new Error("No response from AI");
+        }
+        
         res.json({
             message : "Issue explained successfully!!",
             data : explanation
