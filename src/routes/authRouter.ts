@@ -1,5 +1,7 @@
 import express from "express";
 import prisma from "../config/db";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const authRouter = express.Router();
 
@@ -13,12 +15,12 @@ authRouter.post("/signup", async(req, res)=>{
        if(!email || !password){
           throw new Error("Field Required!!");
        }
-
+       const hashPassword = await bcrypt.hash(password, 10);
        const user = await prisma.user.create({
         data : {
             name,
             email,
-            password,
+            password : hashPassword,
             gitHubURL:gitHubURL
         }
        });
@@ -43,7 +45,7 @@ authRouter.post("/login", async(req, res)=>{
            throw new Error("Please enter values!!");
         }
 
-        const logUser = await prisma.user.findFirst({
+        const logUser = await prisma.user.findUnique({
             where : {
                 email : email
             }
@@ -51,6 +53,16 @@ authRouter.post("/login", async(req, res)=>{
         if(!logUser){
             throw new Error("User not found");
         }
+        const isMatch = await bcrypt.compare(password,logUser.password);
+        if(!isMatch){
+            throw new Error("Invalid Credentials");
+        }
+        const token = await jwt.sign({id : logUser.id},process.env.JWT!, {expiresIn : "7d"});
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "lax"
+        })
 
         res.json({
             message : "Loggin Successful"
@@ -59,9 +71,14 @@ authRouter.post("/login", async(req, res)=>{
     catch(err : any){
         res.json({
             messsage : "Error: "+err.message
-        })
+        });
     }
     
+});
+
+authRouter.post("/logout", async(req, res)=>{
+    res.clearCookie("token");
+    res.send("Logged out successfully !!");
 })
 
 export default authRouter;
