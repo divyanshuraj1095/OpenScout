@@ -3,6 +3,7 @@ import repoRouter from "./routes/repoRoute";
 import aiRouter from "./routes/aiRoute";
 import authRouter from "./routes/authRouter";
 import { authUser } from "./middlewares/auth.middleware";
+import bookMarkRouter from "./routes/bookmarkRoute";
 const app = express();
 
 app.use(express.json())
@@ -13,6 +14,7 @@ app.get("/", (req, res) => {
 app.use("/", authUser,  repoRouter);
 app.use("/", authUser, aiRouter);
 app.use("/", authRouter);
+app.use("/", authUser, bookMarkRouter);
 
 app.listen(7777, () => {
    console.log("Server running on port 7777");

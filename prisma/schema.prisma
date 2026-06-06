@@ -34,6 +34,8 @@ model Issue {
 
   repositoryId     Int
   repository       Repository @relation(fields: [repositoryId], references: [id])
+
+  bookmarks        Bookmark[]
 }
 
 model User {
@@ -44,6 +46,19 @@ model User {
   openedRepos      Int      @default(0)
   gitHubURL        String?
 
+  bookmarks         Bookmark[]
+
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+}
+
+model Bookmark {
+  id      Int @id @default(autoincrement())
+
+  userId  Int
+  issueId Int
+
+  user    User @relation(fields: [userId], references: [id])
+  issue   Issue @relation(fields: [issueId], references: [id])
+  @@unique([userId, issueId])
 }

@@ -1,24 +1,27 @@
 import jwt from "jsonwebtoken";
 
-export const authUser = (req :any, res:any, next:any)=>{
-    try{
-       const token = req.cookie.token;
-       if(!token){
-        res.status(401).json({
-            message : "Unauthorized"
-        });
-       }
+export const authUser = (req: any, res: any, next: any) => {
+    try {
+        const token = req.cookies.token;
 
-       const decoded : any = jwt.verify(
-        token, process.env.JWT!
-       );
-       req.id = decoded.id;
-       next(); 
+        if (!token) {
+            return res.status(401).json({
+                message: "Unauthorized"
+            });
+        }
+
+        const decoded: any = jwt.verify(
+            token,
+            process.env.JWT!
+        );
+
+        req.userId = decoded.id;
+
+        next();
     }
-    catch(err:any){
-        res.json({
-            message : "Error: "+err.message
-        })
+    catch (err: any) {
+        res.status(401).json({
+            message: "Error: " + err.message
+        });
     }
-    
-}
+};
