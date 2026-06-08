@@ -1,5 +1,6 @@
 import express from "express";
 import prisma from "../config/db";
+import { authUser } from "../middlewares/auth.middleware";
 
 const bookMarkRouter = express.Router();
 
@@ -24,6 +25,50 @@ bookMarkRouter.post("/add/:id", async(req:any, res)=>{
         })
     }
 
+});
+
+bookMarkRouter.get("/bookmarks", async(req : any, res) =>{
+    try{
+        const userId = req.userId;
+        const allBookMarks = await prisma.bookmark.findMany({
+            where : {
+                userId 
+            },
+            include:{
+                issue : true
+            }
+        });
+
+        res.json({
+            message : "BookMarks fetched successfully!!",
+            data : allBookMarks
+        });
+    }
+    catch(err : any){
+        res.status(400).json({
+            message : "Error: "+err.message
+        });
+    }
+});
+
+bookMarkRouter.delete("/deletemarker/:id", async(req : any, res)=>{
+    try{
+       const id = Number(req.params.id);
+       await prisma.bookmark.deleteMany({
+        where :{
+            userId : req.userId,
+            id
+        }
+       });
+       res.json({
+        message : "bookmark removed successfully !!"
+       })
+    }
+    catch(err:any){
+       res.status(400).json({
+        message : "Error: "+err.message
+       })
+    }
 });
 
 export default bookMarkRouter;
