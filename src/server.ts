@@ -4,6 +4,7 @@ import aiRouter from "./routes/aiRoute";
 import authRouter from "./routes/authRouter";
 import { authUser } from "./middlewares/auth.middleware";
 import bookMarkRouter from "./routes/bookmarkRoute";
+
 const app = express();
 
 app.use(express.json())
