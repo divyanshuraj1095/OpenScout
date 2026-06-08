@@ -237,5 +237,75 @@ repoRouter.get("/search", async(req, res)=>{
     }
 });
 
+repoRouter.get("/repo/:id/refresh", async(req:any, res)=>{
+    try{
+        const repoid = Number(req.params.id);
+
+        const repo = await prisma.repository.findFirst({
+            where :{
+                id : repoid
+            }
+        });
+        if(!repo){
+            throw new Error("No respository found");
+        }
+        const response = await axios.get(
+            `https://api.github.com/repos/${repo.ownerName}/${repo.repoName}/issues?state=open&per_page=100`
+        );
+        const issues = response.data.filter(
+            (item: any) => !item.pull_request
+        );
+        const existingIssues = await prisma.issue.findMany({
+            where: {
+                repositoryId: repo.id
+            },
+            select: {
+                gitHubIssueId: true
+            }
+        });
+        const existingIds = new Set(
+            existingIssues.map(issue =>
+            issue.gitHubIssueId.toString()
+            )
+        );
+        let newIssues = 0;
+
+        for (const issue of issues) {
+
+        if (existingIds.has(issue.id.toString())) {
+            continue;
+        }
+
+        await prisma.issue.create({
+            data: {
+                gitHubIssueId: issue.id,
+                title: issue.title,
+                description: issue.body || "",
+                labels: issue.labels.map(
+                (label: any) => label.name
+            ),
+            difficulty: classifyDifficulty(
+                issue.labels.map(
+                    (label: any) => label.name
+                )
+            ),
+            repositoryId: repo.id
+           }
+        });
+
+   newIssues++;
+}
+        res.json({
+            message : "Refreshed!"
+        })
+
+    }
+    catch(err:any){
+        res.status(400).json({
+            message : "Error :"+err.message
+        });
+    }
+})
+
 
 export default repoRouter
