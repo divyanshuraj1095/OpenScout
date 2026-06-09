@@ -1,64 +1,51 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url     = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Repository {
-  id        Int        @id @default(autoincrement())
-  repoName  String
-  ownerName String
-  url       String
-  stars     Int?
-  language  String?
+  id          Int     @id @default(autoincrement())
+  repoName    String
+  ownerName   String
+  url         String
+  stars       Int?
+  language    String?
   description String?
-
-  issues    Issue[]
+  issues      Issue[]
 }
 
 model Issue {
-  id               Int    @id @default(autoincrement())
-  gitHubIssueId    BigInt
-  title            String
-  description      String?
-  difficulty       String?
-  labels           String[]
-
-  repositoryId     Int
-  repository       Repository @relation(fields: [repositoryId], references: [id])
-
-  bookmarks        Bookmark[]
+  id            Int        @id @default(autoincrement())
+  gitHubIssueId BigInt
+  title         String
+  description   String?
+  difficulty    String?
+  labels        String[]
+  repositoryId  Int
+  bookmarks     Bookmark[]
+  repository    Repository @relation(fields: [repositoryId], references: [id])
 }
 
 model User {
-  id               Int    @id @default(autoincrement())
-  name             String
-  email            String @unique
-  password         String
-  openedRepos      Int      @default(0)
-  gitHubURL        String?
-
-  bookmarks         Bookmark[]
-
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id          Int        @id @default(autoincrement())
+  name        String
+  email       String     @unique
+  password    String
+  openedRepos Int        @default(0)
+  gitHubURL   String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  bookmarks   Bookmark[]
 }
 
 model Bookmark {
-  id      Int @id @default(autoincrement())
-
+  id      Int   @id @default(autoincrement())
   userId  Int
   issueId Int
-
-  user    User @relation(fields: [userId], references: [id])
   issue   Issue @relation(fields: [issueId], references: [id])
-  @@unique([userId, issueId])
+  user    User  @relation(fields: [userId], references: [id])
 }

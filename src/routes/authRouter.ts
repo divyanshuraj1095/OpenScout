@@ -5,17 +5,21 @@ import jwt from "jsonwebtoken";
 
 const authRouter = express.Router();
 
-authRouter.post("/signup", async(req, res)=>{
+authRouter.post("/signup", async(req : any, res)=>{
     try{
        const name = req.body.name;
        const gitHubURL = req.body.gitHubURL
        const email = req.body.email;
        const password = req.body.password;
 
+       console.log("check")
+
        if(!email || !password){
           throw new Error("Field Required!!");
        }
+       console.log("check");
        const hashPassword = await bcrypt.hash(password, 10);
+       console.log("check")
        const user = await prisma.user.create({
         data : {
             name,
@@ -24,6 +28,7 @@ authRouter.post("/signup", async(req, res)=>{
             gitHubURL:gitHubURL
         }
        });
+       console.log("check");
 
        res.json({
         message : "User added successfully!!",  

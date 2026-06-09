@@ -40,8 +40,16 @@ bookMarkRouter.get("/bookmarks", async(req : any, res) =>{
         });
 
         res.json({
-            message : "BookMarks fetched successfully!!",
-            data : allBookMarks
+            message: "BookMarks fetched successfully!!",
+            data: JSON.parse(
+                JSON.stringify(
+                    allBookMarks,
+                    (_, value) =>
+                    typeof value === "bigint"
+                    ? value.toString()
+                    : value
+            )
+            )
         });
     }
     catch(err : any){

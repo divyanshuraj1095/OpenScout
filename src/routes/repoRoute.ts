@@ -305,7 +305,7 @@ repoRouter.get("/repo/:id/refresh", async(req:any, res)=>{
             message : "Error :"+err.message
         });
     }
-})
+});
 
 
-export default repoRouter
+export default repoRouter;

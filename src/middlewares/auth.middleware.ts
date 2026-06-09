@@ -9,6 +9,7 @@ export const authUser = (req: any, res: any, next: any) => {
                 message: "Unauthorized"
             });
         }
+        console.log("cookie: ", req.cookies);
 
         const decoded: any = jwt.verify(
             token,
