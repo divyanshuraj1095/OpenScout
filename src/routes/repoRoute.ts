@@ -5,7 +5,7 @@ import { classifyDifficulty } from "../utils/classifyDifficulty";
 
 const repoRouter = express.Router();
 
-repoRouter.post("/repo", async (req, res)=>{
+repoRouter.post("/repo", async (req: any, res)=>{
     try{
         
         const repoUrl = req.body.repoUrl;
@@ -33,7 +33,8 @@ repoRouter.post("/repo", async (req, res)=>{
         const existingRepo = await prisma.repository.findFirst({
             where:{
                 repoName,
-                ownerName : owner
+                ownerName : owner,
+                userId : req.userId
             }
         });
 
@@ -48,7 +49,8 @@ repoRouter.post("/repo", async (req, res)=>{
                 url : repoUrl,
                 stars     : repoResponse.data.stargazers_count,
                 language  : repoResponse.data.language,
-                description : repoResponse.data.description
+                description : repoResponse.data.description,
+                userId: req.userId
             }
         });
 
@@ -79,13 +81,17 @@ repoRouter.post("/repo", async (req, res)=>{
     }
 });
 
-repoRouter.get("/issues", async(req, res)=>{
+repoRouter.get("/issues", async(req: any, res)=>{
     try{
 
        const page = Number(req.query.page) || 1;
        const limit = Number(req.query.limit) || 10;
        const {label, difficulty, language} = req.query; 
-       const whereClause:any = {};
+       const whereClause:any = {
+         repository: {
+           userId: req.userId
+         }
+       };
        if(difficulty){
         whereClause.difficulty = difficulty;
        }
@@ -96,6 +102,7 @@ repoRouter.get("/issues", async(req, res)=>{
        }
        if(language){
         whereClause.repository = {
+            userId: req.userId,
             language : language
         };
        }
@@ -135,13 +142,16 @@ repoRouter.get("/issues", async(req, res)=>{
     }
 });
 
-repoRouter.get("/issue/:id", async(req, res)=>{
+repoRouter.get("/issue/:id", async(req: any, res)=>{
     try{
        const id = Number(req.params.id);
 
        const issues = await prisma.issue.findFirst({
         where : {
-            id
+            id,
+            repository: {
+                userId: req.userId
+            }
         },
         include :{
             repository : true
@@ -168,7 +178,7 @@ repoRouter.get("/issue/:id", async(req, res)=>{
     }
 });
 
-repoRouter.get("/repo/:id/issues", async(req, res)=>{
+repoRouter.get("/repo/:id/issues", async(req: any, res)=>{
 
     try{
         const id = Number(req.params.id);
@@ -176,6 +186,9 @@ repoRouter.get("/repo/:id/issues", async(req, res)=>{
         const repoIssues = await prisma.issue.findMany({
             where:{
                 repositoryId : id,
+                repository: {
+                    userId: req.userId
+                }
             }
         });
 
@@ -199,9 +212,13 @@ repoRouter.get("/repo/:id/issues", async(req, res)=>{
     } 
 });
 
-repoRouter.get("/repos", async(req, res)=>{
+repoRouter.get("/repos", async(req: any, res)=>{
     try{
-      const repos = await prisma.repository.findMany();
+      const repos = await prisma.repository.findMany({
+        where: {
+            userId: req.userId
+        }
+      });
       res.json({
         data : repos,
       });
@@ -213,7 +230,7 @@ repoRouter.get("/repos", async(req, res)=>{
     }   
 });
 
-repoRouter.get("/search", async(req, res)=>{
+repoRouter.get("/search", async(req: any, res)=>{
     try{
 
        const {q} = req.query; 
@@ -222,6 +239,9 @@ repoRouter.get("/search", async(req, res)=>{
        }
        const issues = await prisma.issue.findMany({
         where:{
+            repository: {
+                userId: req.userId
+            },
             OR: [
                 {
                     title : {
@@ -268,7 +288,8 @@ repoRouter.get("/repo/:id/refresh", async(req:any, res)=>{
 
         const repo = await prisma.repository.findFirst({
             where :{
-                id : repoid
+                id : repoid,
+                userId: req.userId
             }
         });
         if(!repo){
