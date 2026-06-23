@@ -2,6 +2,7 @@ import express from "express";
 import prisma from "../config/db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { authUser } from "../middlewares/auth.middleware";
 
 const authRouter = express.Router();
 
@@ -85,5 +86,32 @@ authRouter.post("/logout", async(req, res)=>{
     res.clearCookie("token");
     res.send("Logged out successfully !!");
 })
+
+authRouter.get("/profile", authUser, async (req: any, res) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: { id: req.userId },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                gitHubURL: true,
+                openedRepos: true,
+                createdAt: true
+            }
+        });
+        if (!user) {
+            throw new Error("User not found");
+        }
+        res.json({
+            message: "Profile fetched successfully",
+            data: user
+        });
+    } catch (err: any) {
+        res.status(400).json({
+            message: "Error: " + err.message
+        });
+    }
+});
 
 export default authRouter;

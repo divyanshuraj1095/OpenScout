@@ -149,7 +149,16 @@ repoRouter.get("/issue/:id", async(req, res)=>{
        });
 
        res.json({
-        message : "Issue fetched Successfully"
+        message : "Issue fetched Successfully",
+        data: JSON.parse(
+            JSON.stringify(
+                issues,
+                (_, value) =>
+                typeof value === "bigint"
+                ? value.toString()
+                : value
+            )
+        )
        })
     }
     catch(err:any){
@@ -213,21 +222,37 @@ repoRouter.get("/search", async(req, res)=>{
        }
        const issues = await prisma.issue.findMany({
         where:{
-            title : {
-                contains : q as string,
-
-                mode : "insensitive"
-            },
-            description :{
-                contains : q as string,
-                mode : "insensitive"
-            }
+            OR: [
+                {
+                    title : {
+                        contains : q as string,
+                        mode : "insensitive"
+                    }
+                },
+                {
+                    description :{
+                        contains : q as string,
+                        mode : "insensitive"
+                    }
+                }
+            ]
+        },
+        include: {
+            repository: true
         }
        });
 
        res.json({
         message : "Search Results",
-        data : issues
+        data : JSON.parse(
+            JSON.stringify(
+                issues,
+                (_, value) =>
+                typeof value === "bigint"
+                ? value.toString()
+                : value
+            )
+        )
        })
     }
     catch(err:any){
