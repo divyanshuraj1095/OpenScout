@@ -35,7 +35,11 @@ bookMarkRouter.get("/bookmarks", async(req : any, res) =>{
                 userId 
             },
             include:{
-                issue : true
+                issue : {
+                    include: {
+                        repository: true
+                    }
+                }
             }
         });
 
