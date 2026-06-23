@@ -36,7 +36,7 @@ authRouter.post("/signup", async(req : any, res)=>{
        });
     }
     catch(err:any){
-        res.json({
+        res.status(400).json({
             message : "Error: "+err.message
         });
     }
@@ -75,8 +75,8 @@ authRouter.post("/login", async(req, res)=>{
         })
     }
     catch(err : any){
-        res.json({
-            messsage : "Error: "+err.message
+        res.status(400).json({
+            message : "Error: "+err.message
         });
     }
     

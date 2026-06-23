@@ -19,9 +19,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchProfile = async () => {
+  const fetchProfile = async (showSpinner = false) => {
     try {
-      setLoading(true);
+      if (showSpinner) setLoading(true);
       setError(null);
       const profile = await authService.getProfile();
       setUser(profile);
@@ -29,42 +29,36 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(null);
       // We don't want to log error since not logged in is a normal state on init
     } finally {
-      setLoading(false);
+      if (showSpinner) setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProfile();
+    fetchProfile(true);
   }, []);
 
   const login = async (email: string, password?: string) => {
     try {
-      setLoading(true);
       setError(null);
       await authService.login({ email, password });
-      await fetchProfile();
+      await fetchProfile(false);
     } catch (err: any) {
       const msg = err.response?.data?.message || err.message || "Login failed";
       setError(msg);
       throw new Error(msg);
-    } finally {
-      setLoading(false);
     }
   };
 
   const signup = async (name: string, email: string, password?: string, gitHubURL?: string) => {
     try {
-      setLoading(true);
       setError(null);
       await authService.signup({ name, email, password, gitHubURL });
       await authService.login({ email, password });
-      await fetchProfile();
+      await fetchProfile(false);
     } catch (err: any) {
       const msg = err.response?.data?.message || err.message || "Signup failed";
       setError(msg);
       throw new Error(msg);
-    } finally {
-      setLoading(false);
     }
   };
 
