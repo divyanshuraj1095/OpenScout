@@ -2,6 +2,7 @@ import express from "express"
 import axios from "axios"
 import prisma from "../config/db";
 import { classifyDifficulty } from "../utils/classifyDifficulty";
+import { githubHeaders } from "../services/githubService";
 
 const repoRouter = express.Router();
 
@@ -22,11 +23,17 @@ repoRouter.post("/repo", async (req: any, res)=>{
         const [owner, repoName] = url.pathname.replace("/", "").split("/");
 
         const response = await axios.get(
-            `https://api.github.com/repos/${owner}/${repoName}/issues?state=open&per_page=100`
+            `https://api.github.com/repos/${owner}/${repoName}/issues?state=open&per_page=100`,
+            { headers: githubHeaders, params: {
+              state: "open",
+               per_page: 100, }}
         )
 
         const repoResponse = await axios.get(
-            `https://api.github.com/repos/${owner}/${repoName}`
+            `https://api.github.com/repos/${owner}/${repoName}`,
+            { headers: githubHeaders, params: {
+              state: "open",
+               per_page: 100, }}
         );
 
         const issues = response.data.filter(
