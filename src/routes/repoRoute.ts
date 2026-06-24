@@ -9,13 +9,14 @@ repoRouter.post("/repo", async (req: any, res)=>{
     try{
         
         const repoUrl = req.body.repoUrl;
+        if (!repoUrl || typeof repoUrl !== "string") {
+            return res.status(400).json({ message: "repoUrl is required" });
+}
         if(!repoUrl.includes("github.com")){
             throw new Error("Invalid Github url")
         }
-        const part = repoUrl.split("/");
-
-        const owner = part[3];
-        const repoName = part[4];
+        const url = new URL(repoUrl);
+        const [owner, repoName] = url.pathname.replace("/", "").split("/");
 
         const response = await axios.get(
             `https://api.github.com/repos/${owner}/${repoName}/issues?state=open&per_page=100`
