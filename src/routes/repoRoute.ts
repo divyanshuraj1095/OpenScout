@@ -7,13 +7,16 @@ const repoRouter = express.Router();
 
 repoRouter.post("/repo", async (req: any, res)=>{
     try{
-        
-        const repoUrl = req.body.repoUrl;
-        if (!repoUrl || typeof repoUrl !== "string") {
-            return res.status(400).json({ message: "repoUrl is required" });
-}
-        if(!repoUrl.includes("github.com")){
-            throw new Error("Invalid Github url")
+        const repoUrlRaw = req.body.repoUrl;
+
+        if (typeof repoUrlRaw !== "string") {
+            return res.status(400).json({ message: "Invalid GitHub URL" });
+        }
+
+        const repoUrl = repoUrlRaw?.trim();
+
+        if (!repoUrl || !repoUrl.includes("github.com") || typeof repoUrl !== "string") {
+            return res.status(400).json({ message: "Invalid GitHub URL" });
         }
         const url = new URL(repoUrl);
         const [owner, repoName] = url.pathname.replace("/", "").split("/");
