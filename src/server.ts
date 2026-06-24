@@ -29,6 +29,7 @@ app.use("/", authUser, aiRouter);
 app.use("/", authUser, bookMarkRouter);
 
 const PORT = process.env.PORT||7777;
+console.log("ENV PORT =", process.env.PORT);
 app.listen(PORT, () => {
    console.log(`Server running on port ${PORT}`);
 });

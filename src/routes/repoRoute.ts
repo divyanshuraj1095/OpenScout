@@ -310,7 +310,7 @@ repoRouter.get("/repo/:id/refresh", async(req:any, res)=>{
             }
         });
         const existingIds = new Set(
-            existingIssues.map(issue =>
+            existingIssues.map((issue : any) =>
             issue.gitHubIssueId.toString()
             )
         );
