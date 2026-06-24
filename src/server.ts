@@ -13,7 +13,7 @@ dotenv.config();
 
 app.use(
    cors({
-      origin: "http://localhost:5173",
+      origin: process.env.FRONTEND_URL!,
       credentials: true,
    })
 );
@@ -28,6 +28,7 @@ app.use("/", authUser,  repoRouter);
 app.use("/", authUser, aiRouter);
 app.use("/", authUser, bookMarkRouter);
 
-app.listen(7777, () => {
-   console.log("Server running on port 7777");
+const PORT = process.env.PORT||7777;
+app.listen(PORT, () => {
+   console.log(`Server running on port ${PORT}`);
 });
