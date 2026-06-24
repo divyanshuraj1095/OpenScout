@@ -66,13 +66,14 @@ authRouter.post("/login", async(req, res)=>{
         const token = await jwt.sign({id : logUser.id},process.env.JWT!, {expiresIn : "7d"});
         res.cookie("token", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax"
-        })
+            secure: true,
+            sameSite: "none",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
 
         res.json({
             message : "Loggin Successful"
-        })
+        });
     }
     catch(err : any){
         res.status(400).json({
