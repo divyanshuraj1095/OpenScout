@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:17
+    ports: ["127.0.0.1:5433:5432"]
+    environment:
+      POSTGRES_DB: openscout_dev
+      POSTGRES_USER: openscout_dev
+      POSTGRES_PASSWORD: ${OPENSCOUT_DEV_PASSWORD:?set development password}
+    volumes: [openscout_dev_data:/var/lib/postgresql/data]
+volumes:
+  openscout_dev_data: {}
