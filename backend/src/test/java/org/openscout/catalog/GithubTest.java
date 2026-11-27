@@ -65,6 +65,7 @@ class GithubTest {
         server.start();
         try{
             var github=new Github(new ObjectMapper(),"fixture",URI.create("http://127.0.0.1:"+server.getAddress().getPort()));
+            github.requirePublic(4);
             var issues=github.fetch("o/r").issues();
             assertEquals(1,issues.size());assertEquals(8,issues.getFirst().id());
             duplicate.set(true);
@@ -73,6 +74,7 @@ class GithubTest {
             fail.set(true);
             assertEquals(503,assertThrows(ResponseStatusException.class,()->github.fetch("o/r")).getStatusCode().value());
             restricted.set(true);
+            assertEquals(404,assertThrows(ResponseStatusException.class,()->github.requirePublic(4)).getStatusCode().value());
             assertEquals(404,assertThrows(ResponseStatusException.class,()->github.fetch("o/r")).getStatusCode().value());
         } finally {server.stop(0);}
     }

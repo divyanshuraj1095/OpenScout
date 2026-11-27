@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @org.springframework.context.annotation.Import(org.openscout.catalog.FixtureConfig.class)
 @SpringBootTest(webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 class IdentityIntegrationTest {
-    static final PostgreSQLContainer db=new PostgreSQLContainer("postgres:17").withDatabaseName("openscout_dev");
+    static final PostgreSQLContainer db=new PostgreSQLContainer(org.testcontainers.utility.DockerImageName.parse("pgvector/pgvector:0.8.1-pg17").asCompatibleSubstituteFor("postgres")).withDatabaseName("openscout_dev");
     @DynamicPropertySource static void database(DynamicPropertyRegistry properties) {
         if (System.getenv("OPENSCOUT_TEST_PORT") != null) {
             int port = Integer.parseInt(System.getenv("OPENSCOUT_TEST_PORT"));

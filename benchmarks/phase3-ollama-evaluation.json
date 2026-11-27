@@ -1,0 +1,111 @@
+{
+  "generator": "qwen2.5:3b",
+  "digest": "357c53fb659c5076de1d65ccb0b397446227b71a42be9d1603d46168015c9e4b",
+  "temperature": 0,
+  "seed": 42,
+  "num_ctx": 4096,
+  "num_predict": 400,
+  "calibration": [
+    {
+      "threshold": 0.5,
+      "goldChunksRetained": 3,
+      "unsupportedQuestionsPassing": 1
+    },
+    {
+      "threshold": 0.55,
+      "goldChunksRetained": 3,
+      "unsupportedQuestionsPassing": 0
+    },
+    {
+      "threshold": 0.6,
+      "goldChunksRetained": 3,
+      "unsupportedQuestionsPassing": 0
+    },
+    {
+      "threshold": 0.65,
+      "goldChunksRetained": 2,
+      "unsupportedQuestionsPassing": 0
+    },
+    {
+      "threshold": 0.7,
+      "goldChunksRetained": 1,
+      "unsupportedQuestionsPassing": 0
+    }
+  ],
+  "grades": [
+    {
+      "arm": "baseline",
+      "question": "Which database provides transactions and durable job state?",
+      "correct": false,
+      "abstained": true,
+      "evidence": [],
+      "elapsedMs": 4986.1361
+    },
+    {
+      "arm": "baseline",
+      "question": "What is the target incremental service spend on existing local hardware?",
+      "correct": false,
+      "abstained": true,
+      "evidence": [],
+      "elapsedMs": 598.4679
+    },
+    {
+      "arm": "baseline",
+      "question": "Which locking clause do workers use when claiming eligible rows?",
+      "correct": false,
+      "abstained": true,
+      "evidence": [],
+      "elapsedMs": 593.4586
+    },
+    {
+      "arm": "baseline",
+      "question": "What is the name of the office cafeteria chef?",
+      "correct": true,
+      "abstained": true,
+      "evidence": [],
+      "elapsedMs": 643.1444
+    },
+    {
+      "arm": "rag",
+      "question": "Which database provides transactions and durable job state?",
+      "correct": true,
+      "abstained": false,
+      "evidence": [
+        {
+          "id": "c7",
+          "valid": true
+        }
+      ],
+      "elapsedMs": 9630.8136
+    },
+    {
+      "arm": "rag",
+      "question": "What is the target incremental service spend on existing local hardware?",
+      "correct": true,
+      "abstained": false,
+      "evidence": [
+        {
+          "id": "c15",
+          "valid": true
+        }
+      ],
+      "elapsedMs": 11827.5264
+    },
+    {
+      "arm": "rag",
+      "question": "Which locking clause do workers use when claiming eligible rows?",
+      "correct": false,
+      "abstained": true,
+      "evidence": [],
+      "elapsedMs": 7906.4806
+    },
+    {
+      "arm": "rag",
+      "question": "What is the name of the office cafeteria chef?",
+      "correct": true,
+      "abstained": true,
+      "evidence": [],
+      "elapsedMs": 151.816
+    }
+  ]
+}

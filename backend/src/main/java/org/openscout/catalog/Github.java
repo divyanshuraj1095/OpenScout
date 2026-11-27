@@ -13,7 +13,7 @@ import tools.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Component
-class Github {
+class Github implements RepositoryVisibility {
     record Owner(String login) {}
     record Repo(long id,String name,Owner owner,String language,String description,long stargazers_count,
                 @JsonProperty("private") Boolean restricted,String visibility) {}
@@ -60,6 +60,14 @@ class Github {
         if(!Boolean.FALSE.equals(repo.restricted()) || !"public".equals(repo.visibility()))
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         return repo;
+    }
+    @Override public void requirePublic(long id){
+        try {
+            if(readPublicRepo("/repositories/"+id).id()!=id)
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } catch(ResponseStatusException e){throw e;}
+        catch(InterruptedException e){Thread.currentThread().interrupt();throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE);}
+        catch(Exception e){throw new ResponseStatusException(HttpStatus.BAD_GATEWAY,"Repository visibility unavailable");}
     }
     Snapshot fetch(String slug) {
         return fetchPath("/repos/"+slug);

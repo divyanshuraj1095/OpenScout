@@ -1,0 +1,121 @@
+[ {
+  "question" : "Which Spring Boot version does the architecture specify?",
+  "elapsedMs" : 1765.9045,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What Spring AI BOM version is specified?",
+  "elapsedMs" : 846.1331,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What does Hibernate do with the database schema?",
+  "elapsedMs" : 2970.3565,
+  "raw" : "Hibernate generates the database schema based on the mappings defined in the entity beans. It creates tables, relationships, and constraints to match the structure defined in the Java classes."
+}, {
+  "question" : "Where does the indexer split UTF-8 source text?",
+  "elapsedMs" : 863.9037,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "How is a complete generation promoted?",
+  "elapsedMs" : 763.4457,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "Which tool visualizes the operational metrics?",
+  "elapsedMs" : 777.995,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "How should the answer service respond to weak evidence?",
+  "elapsedMs" : 913.8225,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What protects a reclaimed expired lease?",
+  "elapsedMs" : 762.9041,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "Which service supplies local embeddings?",
+  "elapsedMs" : 796.4526,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "Where do controllers get the caller's principal?",
+  "elapsedMs" : 829.9928,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "Which cookie response header must the reverse proxy preserve?",
+  "elapsedMs" : 878.2913,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "Which system receives private metrics from Micrometer?",
+  "elapsedMs" : 842.1484,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What does retrieval pin before embedding the user's question?",
+  "elapsedMs" : 839.5897,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What capacity headroom should be reserved for vector generations?",
+  "elapsedMs" : 879.7849,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "Which answer provider is named in the target architecture?",
+  "elapsedMs" : 932.5365,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "Which server hint does ingestion respect when retrying transient failures?",
+  "elapsedMs" : 790.2833,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What is the right number?",
+  "elapsedMs" : 751.5021,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What is the production database region code?",
+  "elapsedMs" : 753.1324,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What is the Kafka topic used to publish chunk embeddings?",
+  "elapsedMs" : 781.8194,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What is the name of the incident commander?",
+  "elapsedMs" : 763.8178,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What monthly price did the student pay for Kubernetes?",
+  "elapsedMs" : 829.8149,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "Which version should I roll back to?",
+  "elapsedMs" : 824.7829,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What exact integer is the repository file-size limit in bytes?",
+  "elapsedMs" : 926.2877,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What is the Elasticsearch shard count for the vector index?",
+  "elapsedMs" : 848.4997,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "Which of the two services was faster in the incident?",
+  "elapsedMs" : 828.5952,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What is the team's telephone extension?",
+  "elapsedMs" : 792.0241,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What S3 bucket stores passwords in this architecture?",
+  "elapsedMs" : 987.3633,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "What is the lease timeout in seconds?",
+  "elapsedMs" : 711.2249,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "When did that happen?",
+  "elapsedMs" : 745.205,
+  "raw" : "Insufficient context."
+}, {
+  "question" : "Which GPU serial number does the system require for Kafka?",
+  "elapsedMs" : 803.6075,
+  "raw" : "Insufficient context."
+} ]

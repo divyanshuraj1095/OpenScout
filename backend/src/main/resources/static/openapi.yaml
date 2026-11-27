@@ -144,6 +144,37 @@ paths:
       parameters: [{$ref: '#/components/parameters/CSRF'}]
       responses:
         '204': {description: Remove personal bookmark}
+  /api/v1/repositories/{repository}/sample/ingest:
+    parameters:
+      - {in: path, name: repository, required: true, schema: {type: integer, format: int64}}
+    post:
+      summary: Embed the bundled Phase 3 sample for a visible member repository
+      security: [{session: []}]
+      parameters: [{$ref: '#/components/parameters/CSRF'}]
+      responses:
+        '200': {description: Sample chunk count and immutable index version}
+        '404': {description: Repository inaccessible}
+  /api/v1/repositories/{repository}/sample/questions:
+    parameters:
+      - {in: path, name: repository, required: true, schema: {type: integer, format: int64}}
+    post:
+      summary: Answer a question from the bundled sample
+      security: [{session: []}]
+      parameters: [{$ref: '#/components/parameters/CSRF'}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [question]
+              properties:
+                question: {type: string, minLength: 1, maxLength: 1000}
+      responses:
+        '200': {description: Answer with grounded flag, indexVersion and server-validated citations}
+        '404': {description: Repository inaccessible}
+        '409': {description: Sample index missing}
+        '503': {description: Provider unavailable}
 components:
   parameters:
     CSRF: {in: header, name: X-CSRF-TOKEN, required: true, schema: {type: string}}

@@ -1,0 +1,6 @@
+[
+ {"question":"Which database provides transactions and durable job state?","chunk":"c7","gold":"PostgreSQL"},
+ {"question":"What is the target incremental service spend on existing local hardware?","chunk":"c15","gold":"$0"},
+ {"question":"Which locking clause do workers use when claiming eligible rows?","chunk":"c9","gold":"SKIP LOCKED"},
+ {"question":"What is the name of the office cafeteria chef?","chunk":"","gold":""}
+]

@@ -1,0 +1,641 @@
+{
+  "summary": {
+    "positives": 16,
+    "negatives": 14,
+    "metrics": {
+      "baseline": {
+        "overallCorrect": 14,
+        "answerableCorrect": 0,
+        "correctAbstentions": 14,
+        "incorrectAbstentions": 15,
+        "falseAcceptanceRate": 0,
+        "falseRejectionRate": 0.9375,
+        "unsupportedSentences": 2
+      },
+      "rag": {
+        "overallCorrect": 16,
+        "answerableCorrect": 2,
+        "correctAbstentions": 14,
+        "incorrectAbstentions": 12,
+        "falseAcceptanceRate": 0,
+        "falseRejectionRate": 0.75,
+        "unsupportedSentences": 0
+      }
+    },
+    "recall1": 0.6875,
+    "recall3": 0.8125,
+    "mrr": 0.7906249999999999,
+    "top1": 11,
+    "top3": 13,
+    "threshold": 0.61,
+    "negativePass": 4,
+    "positiveMiss": 8,
+    "citations": [
+      {
+        "valid": true,
+        "supportsQuote": true
+      },
+      {
+        "valid": true,
+        "supportsQuote": true
+      },
+      {
+        "valid": true,
+        "supportsQuote": true
+      },
+      {
+        "valid": true,
+        "supportsQuote": true
+      }
+    ],
+    "timingsMs": {
+      "queryEmbedding": {
+        "n": 30,
+        "median": 100.64699999999999,
+        "p95": 183.0727
+      },
+      "vectorSQL": {
+        "n": 30,
+        "median": 47.22185,
+        "p95": 61.5727
+      },
+      "ragGeneration": {
+        "n": 15,
+        "median": 6320.3437,
+        "p95": 13439.2772
+      },
+      "baselineGeneration": {
+        "n": 30,
+        "median": 829.20505,
+        "p95": 1765.9045
+      },
+      "ragEndToEnd": {
+        "n": 30,
+        "median": 1564.5282000000002,
+        "p95": 12655.9242
+      }
+    }
+  },
+  "grades": [
+    {
+      "id": 1,
+      "type": "direct",
+      "question": "Which Spring Boot version does the architecture specify?",
+      "gold": "4.0.10",
+      "rank": 1,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 2,
+      "type": "direct",
+      "question": "What Spring AI BOM version is specified?",
+      "gold": "2.0.2",
+      "rank": 1,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": false,
+        "correct": false,
+        "citations": [
+          {
+            "valid": true,
+            "supportsQuote": true
+          }
+        ],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 3,
+      "type": "technical",
+      "question": "What does Hibernate do with the database schema?",
+      "gold": "Hibernate validates",
+      "rank": 1,
+      "baseline": {
+        "abstained": false,
+        "correct": false,
+        "unsupportedSentences": 2
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 4,
+      "type": "paraphrase",
+      "question": "Where does the indexer split UTF-8 source text?",
+      "gold": "line boundaries",
+      "rank": 2,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 5,
+      "type": "technical",
+      "question": "How is a complete generation promoted?",
+      "gold": "compare-and-swap",
+      "rank": 4,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 6,
+      "type": "direct",
+      "question": "Which tool visualizes the operational metrics?",
+      "gold": "Grafana",
+      "rank": 1,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 7,
+      "type": "paraphrase",
+      "question": "How should the answer service respond to weak evidence?",
+      "gold": "abstain",
+      "rank": 1,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": false,
+        "correct": false,
+        "citations": [
+          {
+            "valid": true,
+            "supportsQuote": true
+          }
+        ],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 8,
+      "type": "technical",
+      "question": "What protects a reclaimed expired lease?",
+      "gold": "fencing tokens",
+      "rank": 2,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 9,
+      "type": "direct",
+      "question": "Which service supplies local embeddings?",
+      "gold": "Ollama",
+      "rank": 5,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 10,
+      "type": "paraphrase",
+      "question": "Where do controllers get the caller's principal?",
+      "gold": "Spring Security",
+      "rank": 1,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": false,
+        "correct": true,
+        "citations": [
+          {
+            "valid": true,
+            "supportsQuote": true
+          }
+        ],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 11,
+      "type": "technical",
+      "question": "Which cookie response header must the reverse proxy preserve?",
+      "gold": "Set-Cookie",
+      "rank": 1,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 12,
+      "type": "direct",
+      "question": "Which system receives private metrics from Micrometer?",
+      "gold": "Prometheus",
+      "rank": 1,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 13,
+      "type": "paraphrase",
+      "question": "What does retrieval pin before embedding the user's question?",
+      "gold": "active index",
+      "rank": 1,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": false,
+        "correct": true,
+        "citations": [
+          {
+            "valid": true,
+            "supportsQuote": true
+          }
+        ],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 14,
+      "type": "technical",
+      "question": "What capacity headroom should be reserved for vector generations?",
+      "gold": "two vector generations",
+      "rank": 1,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 15,
+      "type": "direct",
+      "question": "Which answer provider is named in the target architecture?",
+      "gold": "Groq",
+      "rank": 5,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 16,
+      "type": "paraphrase",
+      "question": "Which server hint does ingestion respect when retrying transient failures?",
+      "gold": "Retry-After",
+      "rank": 1,
+      "baseline": {
+        "abstained": true,
+        "correct": false,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": false,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 17,
+      "type": "ambiguous",
+      "question": "What is the right number?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 18,
+      "type": "unsupported",
+      "question": "What is the production database region code?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 19,
+      "type": "misleading",
+      "question": "What is the Kafka topic used to publish chunk embeddings?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 20,
+      "type": "unsupported",
+      "question": "What is the name of the incident commander?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 21,
+      "type": "misleading",
+      "question": "What monthly price did the student pay for Kubernetes?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 22,
+      "type": "ambiguous",
+      "question": "Which version should I roll back to?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 23,
+      "type": "unsupported",
+      "question": "What exact integer is the repository file-size limit in bytes?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 24,
+      "type": "misleading",
+      "question": "What is the Elasticsearch shard count for the vector index?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 25,
+      "type": "ambiguous",
+      "question": "Which of the two services was faster in the incident?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 26,
+      "type": "unsupported",
+      "question": "What is the team's telephone extension?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 27,
+      "type": "misleading",
+      "question": "What S3 bucket stores passwords in this architecture?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 28,
+      "type": "unsupported",
+      "question": "What is the lease timeout in seconds?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 29,
+      "type": "ambiguous",
+      "question": "When did that happen?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    },
+    {
+      "id": 30,
+      "type": "misleading",
+      "question": "Which GPU serial number does the system require for Kafka?",
+      "gold": "",
+      "rank": null,
+      "baseline": {
+        "abstained": true,
+        "correct": true,
+        "unsupportedSentences": 0
+      },
+      "rag": {
+        "abstained": true,
+        "correct": true,
+        "citations": [],
+        "unsupportedSentences": 0
+      }
+    }
+  ]
+}

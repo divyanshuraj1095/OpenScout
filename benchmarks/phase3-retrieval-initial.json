@@ -1,0 +1,68 @@
+{
+  "ingestionMs" : 5302.535,
+  "chunks" : 8,
+  "dimensions" : 768,
+  "index" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+  "queries" : [ {
+    "question" : "Which database provides transactions and durable job state?",
+    "retrievalIncludingEmbeddingMs" : 180.1265,
+    "expected" : "c7",
+    "hits" : [ {
+      "id" : "c7",
+      "score" : 0.7361045417692259
+    }, {
+      "id" : "c9",
+      "score" : 0.6686298841933086
+    }, {
+      "id" : "c13",
+      "score" : 0.6345557656585947
+    } ],
+    "queryEmbeddingMs" : 130.5868
+  }, {
+    "question" : "What is the target incremental service spend on existing local hardware?",
+    "retrievalIncludingEmbeddingMs" : 199.2018,
+    "expected" : "c15",
+    "hits" : [ {
+      "id" : "c15",
+      "score" : 0.680040739783271
+    }, {
+      "id" : "c13",
+      "score" : 0.5934111980272396
+    }, {
+      "id" : "c9",
+      "score" : 0.5672732608966425
+    } ],
+    "queryEmbeddingMs" : 151.7419
+  }, {
+    "question" : "Which locking clause do workers use when claiming eligible rows?",
+    "retrievalIncludingEmbeddingMs" : 115.7015,
+    "expected" : "c9",
+    "hits" : [ {
+      "id" : "c9",
+      "score" : 0.6147793076889296
+    }, {
+      "id" : "c7",
+      "score" : 0.5824236476785598
+    }, {
+      "id" : "c11",
+      "score" : 0.5715122137302298
+    } ],
+    "queryEmbeddingMs" : 67.9741
+  }, {
+    "question" : "What is the name of the office cafeteria chef?",
+    "retrievalIncludingEmbeddingMs" : 147.84,
+    "expected" : "",
+    "hits" : [ {
+      "id" : "c9",
+      "score" : 0.5188347320650228
+    }, {
+      "id" : "c13",
+      "score" : 0.4984854168058763
+    }, {
+      "id" : "c15",
+      "score" : 0.4875883881187544
+    } ],
+    "queryEmbeddingMs" : 91.1491
+  } ],
+  "documentEmbeddingMs" : [ 2823.4368, 214.4951, 280.5034, 220.7863, 376.095, 227.1141, 285.2704, 410.9578 ]
+}

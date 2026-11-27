@@ -1,0 +1,31 @@
+type|chunk|gold|question
+direct|c5|4.0.10|Which Spring Boot version does the architecture specify?
+direct|c5|2.0.2|What Spring AI BOM version is specified?
+technical|c7|Hibernate validates|What does Hibernate do with the database schema?
+paraphrase|c9|line boundaries|Where does the indexer split UTF-8 source text?
+technical|c9|compare-and-swap|How is a complete generation promoted?
+direct|c13|Grafana|Which tool visualizes the operational metrics?
+paraphrase|c11|abstain|How should the answer service respond to weak evidence?
+technical|c9|fencing tokens|What protects a reclaimed expired lease?
+direct|c7|Ollama|Which service supplies local embeddings?
+paraphrase|c3|Spring Security|Where do controllers get the caller's principal?
+technical|c15|Set-Cookie|Which cookie response header must the reverse proxy preserve?
+direct|c13|Prometheus|Which system receives private metrics from Micrometer?
+paraphrase|c11|active index|What does retrieval pin before embedding the user's question?
+technical|c13|two vector generations|What capacity headroom should be reserved for vector generations?
+direct|c7|Groq|Which answer provider is named in the target architecture?
+paraphrase|c9|Retry-After|Which server hint does ingestion respect when retrying transient failures?
+ambiguous|||What is the right number?
+unsupported|||What is the production database region code?
+misleading|||What is the Kafka topic used to publish chunk embeddings?
+unsupported|||What is the name of the incident commander?
+misleading|||What monthly price did the student pay for Kubernetes?
+ambiguous|||Which version should I roll back to?
+unsupported|||What exact integer is the repository file-size limit in bytes?
+misleading|||What is the Elasticsearch shard count for the vector index?
+ambiguous|||Which of the two services was faster in the incident?
+unsupported|||What is the team's telephone extension?
+misleading|||What S3 bucket stores passwords in this architecture?
+unsupported|||What is the lease timeout in seconds?
+ambiguous|||When did that happen?
+misleading|||Which GPU serial number does the system require for Kafka?

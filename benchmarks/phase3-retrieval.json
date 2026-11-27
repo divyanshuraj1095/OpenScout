@@ -1,0 +1,69 @@
+{
+  "dimensions" : 768,
+  "threshold" : 0.55,
+  "queries" : [ {
+    "queryEmbeddingMs" : 96.8998,
+    "question" : "Which database provides transactions and durable job state?",
+    "retrievalIncludingEmbeddingMs" : 142.3101,
+    "expected" : "c7",
+    "hits" : [ {
+      "id" : "c7",
+      "score" : 0.7361045417692259
+    }, {
+      "id" : "c9",
+      "score" : 0.6686298841933086
+    }, {
+      "id" : "c13",
+      "score" : 0.6345557656585947
+    } ]
+  }, {
+    "queryEmbeddingMs" : 218.9398,
+    "question" : "What is the target incremental service spend on existing local hardware?",
+    "retrievalIncludingEmbeddingMs" : 264.6541,
+    "expected" : "c15",
+    "hits" : [ {
+      "id" : "c15",
+      "score" : 0.680040739783271
+    }, {
+      "id" : "c13",
+      "score" : 0.5934111980272396
+    }, {
+      "id" : "c9",
+      "score" : 0.5672732608966425
+    } ]
+  }, {
+    "queryEmbeddingMs" : 132.4984,
+    "question" : "Which locking clause do workers use when claiming eligible rows?",
+    "retrievalIncludingEmbeddingMs" : 179.4058,
+    "expected" : "c9",
+    "hits" : [ {
+      "id" : "c9",
+      "score" : 0.6147793076889296
+    }, {
+      "id" : "c7",
+      "score" : 0.5824236476785598
+    }, {
+      "id" : "c11",
+      "score" : 0.5715122137302298
+    } ]
+  }, {
+    "queryEmbeddingMs" : 65.8808,
+    "question" : "What is the name of the office cafeteria chef?",
+    "retrievalIncludingEmbeddingMs" : 115.7128,
+    "expected" : "",
+    "hits" : [ {
+      "id" : "c9",
+      "score" : 0.5188347320650228
+    }, {
+      "id" : "c13",
+      "score" : 0.4984854168058763
+    }, {
+      "id" : "c15",
+      "score" : 0.4875883881187544
+    } ]
+  } ],
+  "documentEmbeddingMs" : [ 1328.3234, 167.2343, 207.5165, 173.4291, 314.4507, 232.4833, 239.6905, 414.21 ],
+  "chunks" : 8,
+  "ingestionMs" : 3452.1423,
+  "index" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f"
+}

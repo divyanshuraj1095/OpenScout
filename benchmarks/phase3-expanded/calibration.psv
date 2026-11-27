@@ -1,0 +1,13 @@
+type|chunk|gold|question
+direct|c3|Java 21|Which Java release targets the Maven application?
+technical|c7|Flyway|Which component owns DDL?
+paraphrase|c13|only necessary passages|How much repository text should leave the system for a hosted model?
+technical|c9|SKIP LOCKED|Which locking clause do workers use when claiming eligible rows?
+direct|c15|$0|What incremental service spend is targeted?
+paraphrase|c11|retrieved IDs|Where must accepted citation IDs come from?
+ambiguous|||Which one is better?
+unsupported|||What payroll software does the engineering team use?
+misleading|||What is the documented Kafka broker hostname?
+unsupported|||How many CPU cores does the production database have?
+ambiguous|||What value should I set it to?
+misleading|||What is the password printed by the monitoring dashboard?

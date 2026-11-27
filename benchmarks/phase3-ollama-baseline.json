@@ -1,0 +1,24 @@
+{
+  "rows" : [ {
+    "question" : "Which database provides transactions and durable job state?",
+    "arm" : "baseline",
+    "elapsedMs" : 4986.1361,
+    "response" : "Insufficient context."
+  }, {
+    "question" : "What is the target incremental service spend on existing local hardware?",
+    "arm" : "baseline",
+    "elapsedMs" : 598.4679,
+    "response" : "Insufficient context."
+  }, {
+    "question" : "Which locking clause do workers use when claiming eligible rows?",
+    "arm" : "baseline",
+    "elapsedMs" : 593.4586,
+    "response" : "Insufficient context."
+  }, {
+    "question" : "What is the name of the office cafeteria chef?",
+    "arm" : "baseline",
+    "elapsedMs" : 643.1444,
+    "response" : "Insufficient context."
+  } ],
+  "model" : "qwen2.5:3b"
+}

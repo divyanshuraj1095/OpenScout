@@ -1,0 +1,689 @@
+[ {
+  "generationMs" : 5508.39,
+  "embeddingMs" : 190.8572,
+  "vectorMs" : 89.7118,
+  "raw" : "{}",
+  "ranks" : [ {
+    "score" : 0.7132162705918137,
+    "chunk" : "c5"
+  }, {
+    "score" : 0.593815110639377,
+    "chunk" : "c3"
+  }, {
+    "score" : 0.5589303444541268,
+    "chunk" : "c1"
+  } ],
+  "question" : "Which Spring Boot version does the architecture specify?",
+  "elapsedMs" : 5944.2093,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 6320.3437,
+  "embeddingMs" : 90.6056,
+  "vectorMs" : 44.7123,
+  "raw" : "{\"quote\":\"Boot manages Security, JPA/Hibernate, JDBC and Micrometer versions. Spring AI supplies replaceable embedding adapters.\",\"chunkId\":\"c5\"}",
+  "ranks" : [ {
+    "score" : 0.8099949488039704,
+    "chunk" : "c5"
+  }, {
+    "score" : 0.5997545182192942,
+    "chunk" : "c3"
+  }, {
+    "score" : 0.5335799574632175,
+    "chunk" : "c13"
+  } ],
+  "question" : "What Spring AI BOM version is specified?",
+  "elapsedMs" : 6473.2954,
+  "response" : {
+    "answer" : "Boot manages Security, JPA/Hibernate, JDBC and Micrometer versions. Spring AI supplies replaceable embedding adapters.",
+    "grounded" : true,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ {
+      "chunkId" : "c5",
+      "path" : "docs/ARCHITECTURE.md",
+      "startLine" : 5,
+      "endLine" : 5,
+      "commitSha" : "8c9aa3f92c032e09263f8a601d999f948e0bd070",
+      "url" : "https://github.com/divyanshuraj1095/OpenScout/blob/8c9aa3f92c032e09263f8a601d999f948e0bd070/docs/ARCHITECTURE.md#L5-L5"
+    } ]
+  }
+}, {
+  "generationMs" : 2832.429,
+  "embeddingMs" : 101.7277,
+  "vectorMs" : 44.8433,
+  "raw" : "{}",
+  "ranks" : [ {
+    "score" : 0.6148232040546976,
+    "chunk" : "c7"
+  }, {
+    "score" : 0.5297115023147837,
+    "chunk" : "c5"
+  }, {
+    "score" : 0.5221073495701852,
+    "chunk" : "c13"
+  } ],
+  "question" : "What does Hibernate do with the database schema?",
+  "elapsedMs" : 3013.752,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 4232.0755,
+  "embeddingMs" : 132.4508,
+  "vectorMs" : 48.6505,
+  "raw" : "{}",
+  "ranks" : [ {
+    "score" : 0.616565841472444,
+    "chunk" : "c11"
+  }, {
+    "score" : 0.60137076312506,
+    "chunk" : "c9"
+  }, {
+    "score" : 0.5523501265571419,
+    "chunk" : "c15"
+  } ],
+  "question" : "Where does the indexer split UTF-8 source text?",
+  "elapsedMs" : 4428.4141,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "How is a complete generation promoted?",
+  "vectorMs" : 45.3713,
+  "embeddingMs" : 112.7511,
+  "ranks" : [ {
+    "score" : 0.5922819398993696,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.5694864905492715,
+    "chunk" : "c7"
+  }, {
+    "score" : 0.5685183481485502,
+    "chunk" : "c15"
+  } ],
+  "elapsedMs" : 161.4986,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "Which tool visualizes the operational metrics?",
+  "vectorMs" : 44.6597,
+  "embeddingMs" : 65.8952,
+  "ranks" : [ {
+    "score" : 0.5828227700629031,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.5802234219972122,
+    "chunk" : "c11"
+  }, {
+    "score" : 0.5645060308554223,
+    "chunk" : "c9"
+  } ],
+  "elapsedMs" : 113.4934,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 7960.9588,
+  "embeddingMs" : 69.9984,
+  "vectorMs" : 46.2562,
+  "raw" : "{\"quote\":\"RetrievalService checks membership and public visibility, pins the active index, embeds the question using its exact model, and selects top-k chunks constrained by repository and version before ranking.\",\"chunkId\":\"c11\"}",
+  "ranks" : [ {
+    "score" : 0.671661474805632,
+    "chunk" : "c11"
+  }, {
+    "score" : 0.5943712639987719,
+    "chunk" : "c15"
+  }, {
+    "score" : 0.5929331689755902,
+    "chunk" : "c13"
+  } ],
+  "question" : "How should the answer service respond to weak evidence?",
+  "elapsedMs" : 8092.4342,
+  "response" : {
+    "answer" : "RetrievalService checks membership and public visibility, pins the active index, embeds the question using its exact model, and selects top-k chunks constrained by repository and version before ranking.",
+    "grounded" : true,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ {
+      "chunkId" : "c11",
+      "path" : "docs/ARCHITECTURE.md",
+      "startLine" : 11,
+      "endLine" : 11,
+      "commitSha" : "8c9aa3f92c032e09263f8a601d999f948e0bd070",
+      "url" : "https://github.com/divyanshuraj1095/OpenScout/blob/8c9aa3f92c032e09263f8a601d999f948e0bd070/docs/ARCHITECTURE.md#L11-L11"
+    } ]
+  }
+}, {
+  "question" : "What protects a reclaimed expired lease?",
+  "vectorMs" : 46.4405,
+  "embeddingMs" : 100.0489,
+  "ranks" : [ {
+    "score" : 0.5847388533703665,
+    "chunk" : "c15"
+  }, {
+    "score" : 0.5769199706053949,
+    "chunk" : "c9"
+  }, {
+    "score" : 0.5753544389356521,
+    "chunk" : "c7"
+  } ],
+  "elapsedMs" : 156.7664,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 13439.2772,
+  "embeddingMs" : 68.6186,
+  "vectorMs" : 47.3981,
+  "raw" : "{}",
+  "ranks" : [ {
+    "score" : 0.6337684132827089,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.6189343276815641,
+    "chunk" : "c11"
+  }, {
+    "score" : 0.6188650230186354,
+    "chunk" : "c15"
+  } ],
+  "question" : "Which service supplies local embeddings?",
+  "elapsedMs" : 13569.8752,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 4484.0559,
+  "embeddingMs" : 111.6156,
+  "vectorMs" : 49.8396,
+  "raw" : "{\"quote\":\"Controllers accept validated inputs and obtain the principal from Spring Security.\",\"chunkId\":\"c3\"}",
+  "ranks" : [ {
+    "score" : 0.623443748291801,
+    "chunk" : "c3"
+  }, {
+    "score" : 0.57993258774091,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.5785829046018094,
+    "chunk" : "c15"
+  } ],
+  "question" : "Where do controllers get the caller's principal?",
+  "elapsedMs" : 4662.0601,
+  "response" : {
+    "answer" : "Controllers accept validated inputs and obtain the principal from Spring Security.",
+    "grounded" : true,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ {
+      "chunkId" : "c3",
+      "path" : "docs/ARCHITECTURE.md",
+      "startLine" : 3,
+      "endLine" : 3,
+      "commitSha" : "8c9aa3f92c032e09263f8a601d999f948e0bd070",
+      "url" : "https://github.com/divyanshuraj1095/OpenScout/blob/8c9aa3f92c032e09263f8a601d999f948e0bd070/docs/ARCHITECTURE.md#L3-L3"
+    } ]
+  }
+}, {
+  "generationMs" : 9864.7538,
+  "embeddingMs" : 102.7384,
+  "vectorMs" : 49.4342,
+  "raw" : "{}",
+  "ranks" : [ {
+    "score" : 0.6715503543870072,
+    "chunk" : "c15"
+  }, {
+    "score" : 0.6254940553027237,
+    "chunk" : "c11"
+  }, {
+    "score" : 0.585372680568182,
+    "chunk" : "c9"
+  } ],
+  "question" : "Which cookie response header must the reverse proxy preserve?",
+  "elapsedMs" : 10032.6801,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "Which system receives private metrics from Micrometer?",
+  "vectorMs" : 48.8735,
+  "embeddingMs" : 119.7148,
+  "ranks" : [ {
+    "score" : 0.6080336055595414,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.5756332946916547,
+    "chunk" : "c7"
+  }, {
+    "score" : 0.5598905468378496,
+    "chunk" : "c11"
+  } ],
+  "elapsedMs" : 172.7802,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 7747.5537,
+  "embeddingMs" : 77.1134,
+  "vectorMs" : 48.5193,
+  "raw" : "{\"quote\":\"RetrievalService checks membership and public visibility, pins the active index, embeds the question using its exact model, and selects top-k chunks constrained by repository and version before ranking.\",\"chunkId\":\"c11\"}",
+  "ranks" : [ {
+    "score" : 0.7062430661192352,
+    "chunk" : "c11"
+  }, {
+    "score" : 0.5861220298496453,
+    "chunk" : "c9"
+  }, {
+    "score" : 0.5855577617557733,
+    "chunk" : "c15"
+  } ],
+  "question" : "What does retrieval pin before embedding the user's question?",
+  "elapsedMs" : 7888.8537,
+  "response" : {
+    "answer" : "RetrievalService checks membership and public visibility, pins the active index, embeds the question using its exact model, and selects top-k chunks constrained by repository and version before ranking.",
+    "grounded" : true,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ {
+      "chunkId" : "c11",
+      "path" : "docs/ARCHITECTURE.md",
+      "startLine" : 11,
+      "endLine" : 11,
+      "commitSha" : "8c9aa3f92c032e09263f8a601d999f948e0bd070",
+      "url" : "https://github.com/divyanshuraj1095/OpenScout/blob/8c9aa3f92c032e09263f8a601d999f948e0bd070/docs/ARCHITECTURE.md#L11-L11"
+    } ]
+  }
+}, {
+  "question" : "What capacity headroom should be reserved for vector generations?",
+  "vectorMs" : 45.9323,
+  "embeddingMs" : 101.2451,
+  "ranks" : [ {
+    "score" : 0.5652702372944715,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.5485472410051614,
+    "chunk" : "c7"
+  }, {
+    "score" : 0.5273950387750821,
+    "chunk" : "c15"
+  } ],
+  "elapsedMs" : 150.2543,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 9913.4766,
+  "embeddingMs" : 70.9358,
+  "vectorMs" : 45.9597,
+  "raw" : "{}",
+  "ranks" : [ {
+    "score" : 0.656477907686138,
+    "chunk" : "c1"
+  }, {
+    "score" : 0.6230227947235506,
+    "chunk" : "c11"
+  }, {
+    "score" : 0.6145967378659478,
+    "chunk" : "c15"
+  } ],
+  "question" : "Which answer provider is named in the target architecture?",
+  "elapsedMs" : 10045.4165,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 12436.7512,
+  "embeddingMs" : 154.1356,
+  "vectorMs" : 47.2359,
+  "raw" : "{}",
+  "ranks" : [ {
+    "score" : 0.7202099274462863,
+    "chunk" : "c9"
+  }, {
+    "score" : 0.6208165533930682,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.6187349956545263,
+    "chunk" : "c11"
+  } ],
+  "question" : "Which server hint does ingestion respect when retrying transient failures?",
+  "elapsedMs" : 12655.9242,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "What is the right number?",
+  "vectorMs" : 48.1472,
+  "embeddingMs" : 122.449,
+  "ranks" : [ {
+    "score" : 0.5278291983706321,
+    "chunk" : "c7"
+  }, {
+    "score" : 0.5182271819398997,
+    "chunk" : "c15"
+  }, {
+    "score" : 0.5134552685129331,
+    "chunk" : "c9"
+  } ],
+  "elapsedMs" : 173.7857,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 2774.8109,
+  "embeddingMs" : 61.8474,
+  "vectorMs" : 46.0133,
+  "raw" : "{}",
+  "ranks" : [ {
+    "score" : 0.6203371595532514,
+    "chunk" : "c7"
+  }, {
+    "score" : 0.584849828842363,
+    "chunk" : "c9"
+  }, {
+    "score" : 0.5830784987479845,
+    "chunk" : "c13"
+  } ],
+  "question" : "What is the production database region code?",
+  "elapsedMs" : 2896.512,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 4085.6851,
+  "embeddingMs" : 117.9398,
+  "vectorMs" : 45.2993,
+  "raw" : "{}",
+  "ranks" : [ {
+    "score" : 0.6121224663477467,
+    "chunk" : "c11"
+  }, {
+    "score" : 0.5858484855801224,
+    "chunk" : "c9"
+  }, {
+    "score" : 0.5807719423227833,
+    "chunk" : "c7"
+  } ],
+  "question" : "What is the Kafka topic used to publish chunk embeddings?",
+  "elapsedMs" : 4262.1108,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "What is the name of the incident commander?",
+  "vectorMs" : 47.6105,
+  "embeddingMs" : 91.5519,
+  "ranks" : [ {
+    "score" : 0.511356649075386,
+    "chunk" : "c9"
+  }, {
+    "score" : 0.49703472923407654,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.49212855194468086,
+    "chunk" : "c11"
+  } ],
+  "elapsedMs" : 142.2474,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 6493.3538,
+  "embeddingMs" : 76.3493,
+  "vectorMs" : 45.687,
+  "raw" : "{}",
+  "ranks" : [ {
+    "score" : 0.6102566800057532,
+    "chunk" : "c15"
+  }, {
+    "score" : 0.5518936000314324,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.524226603004149,
+    "chunk" : "c3"
+  } ],
+  "question" : "What monthly price did the student pay for Kubernetes?",
+  "elapsedMs" : 6630.7669,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "Which version should I roll back to?",
+  "vectorMs" : 61.5727,
+  "embeddingMs" : 130.0446,
+  "ranks" : [ {
+    "score" : 0.5855886267652195,
+    "chunk" : "c5"
+  }, {
+    "score" : 0.5767756184838899,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.5748213015657238,
+    "chunk" : "c9"
+  } ],
+  "elapsedMs" : 194.1734,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "generationMs" : 5473.6297,
+  "embeddingMs" : 108.5918,
+  "vectorMs" : 45.7532,
+  "raw" : "{}",
+  "ranks" : [ {
+    "score" : 0.6563315000337413,
+    "chunk" : "c9"
+  }, {
+    "score" : 0.6090066901185273,
+    "chunk" : "c15"
+  }, {
+    "score" : 0.6081623668574752,
+    "chunk" : "c13"
+  } ],
+  "question" : "What exact integer is the repository file-size limit in bytes?",
+  "elapsedMs" : 5643.1802,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "What is the Elasticsearch shard count for the vector index?",
+  "vectorMs" : 46.173,
+  "embeddingMs" : 183.0727,
+  "ranks" : [ {
+    "score" : 0.5900198143638049,
+    "chunk" : "c9"
+  }, {
+    "score" : 0.5779014295633358,
+    "chunk" : "c11"
+  }, {
+    "score" : 0.5634449753692939,
+    "chunk" : "c13"
+  } ],
+  "elapsedMs" : 232.5444,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "Which of the two services was faster in the incident?",
+  "vectorMs" : 47.2078,
+  "embeddingMs" : 105.6314,
+  "ranks" : [ {
+    "score" : 0.5511855957065945,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.5477824154159683,
+    "chunk" : "c11"
+  }, {
+    "score" : 0.5432618532620843,
+    "chunk" : "c7"
+  } ],
+  "elapsedMs" : 155.9027,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "What is the team's telephone extension?",
+  "vectorMs" : 46.5283,
+  "embeddingMs" : 68.8944,
+  "ranks" : [ {
+    "score" : 0.5491237523260707,
+    "chunk" : "c7"
+  }, {
+    "score" : 0.5481285011385387,
+    "chunk" : "c11"
+  }, {
+    "score" : 0.5476113657188766,
+    "chunk" : "c9"
+  } ],
+  "elapsedMs" : 118.3937,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "What S3 bucket stores passwords in this architecture?",
+  "vectorMs" : 47.9951,
+  "embeddingMs" : 71.9013,
+  "ranks" : [ {
+    "score" : 0.5714779325776261,
+    "chunk" : "c7"
+  }, {
+    "score" : 0.5458196508444899,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.5436334552000763,
+    "chunk" : "c15"
+  } ],
+  "elapsedMs" : 123.3425,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "What is the lease timeout in seconds?",
+  "vectorMs" : 48.395,
+  "embeddingMs" : 71.065,
+  "ranks" : [ {
+    "score" : 0.5527017727901972,
+    "chunk" : "c9"
+  }, {
+    "score" : 0.5255516080075749,
+    "chunk" : "c7"
+  }, {
+    "score" : 0.525520936865305,
+    "chunk" : "c13"
+  } ],
+  "elapsedMs" : 122.5981,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "When did that happen?",
+  "vectorMs" : 47.6837,
+  "embeddingMs" : 67.0619,
+  "ranks" : [ {
+    "score" : 0.508683546083688,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.5031970585589527,
+    "chunk" : "c9"
+  }, {
+    "score" : 0.4925996509969308,
+    "chunk" : "c7"
+  } ],
+  "elapsedMs" : 117.946,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+}, {
+  "question" : "Which GPU serial number does the system require for Kafka?",
+  "vectorMs" : 48.6452,
+  "embeddingMs" : 83.0544,
+  "ranks" : [ {
+    "score" : 0.5272754051460843,
+    "chunk" : "c13"
+  }, {
+    "score" : 0.5271809637245998,
+    "chunk" : "c15"
+  }, {
+    "score" : 0.5156204085802581,
+    "chunk" : "c7"
+  } ],
+  "elapsedMs" : 134.8623,
+  "response" : {
+    "answer" : "Insufficient context.",
+    "grounded" : false,
+    "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+    "citations" : [ ]
+  }
+} ]

@@ -1,0 +1,79 @@
+{
+  "temperature" : 0,
+  "rows" : [ {
+    "question" : "Which database provides transactions and durable job state?",
+    "arm" : "baseline",
+    "elapsedMs" : 4986.1361,
+    "response" : "Insufficient context."
+  }, {
+    "question" : "What is the target incremental service spend on existing local hardware?",
+    "arm" : "baseline",
+    "elapsedMs" : 598.4679,
+    "response" : "Insufficient context."
+  }, {
+    "question" : "Which locking clause do workers use when claiming eligible rows?",
+    "arm" : "baseline",
+    "elapsedMs" : 593.4586,
+    "response" : "Insufficient context."
+  }, {
+    "question" : "What is the name of the office cafeteria chef?",
+    "arm" : "baseline",
+    "elapsedMs" : 643.1444,
+    "response" : "Insufficient context."
+  }, {
+    "question" : "Which database provides transactions and durable job state?",
+    "arm" : "rag",
+    "elapsedMs" : 9630.8136,
+    "response" : {
+      "answer" : "PostgreSQL provides transactions and durable job state.",
+      "grounded" : true,
+      "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+      "citations" : [ {
+        "chunkId" : "c7",
+        "path" : "docs/ARCHITECTURE.md",
+        "startLine" : 7,
+        "endLine" : 7,
+        "commitSha" : "8c9aa3f92c032e09263f8a601d999f948e0bd070",
+        "url" : "https://github.com/divyanshuraj1095/OpenScout/blob/8c9aa3f92c032e09263f8a601d999f948e0bd070/docs/ARCHITECTURE.md#L7-L7"
+      } ]
+    }
+  }, {
+    "question" : "What is the target incremental service spend on existing local hardware?",
+    "arm" : "rag",
+    "elapsedMs" : 11827.5264,
+    "response" : {
+      "answer" : "Student budget: target $0 incremental service spend on existing local hardware.",
+      "grounded" : true,
+      "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+      "citations" : [ {
+        "chunkId" : "c15",
+        "path" : "docs/ARCHITECTURE.md",
+        "startLine" : 15,
+        "endLine" : 16,
+        "commitSha" : "8c9aa3f92c032e09263f8a601d999f948e0bd070",
+        "url" : "https://github.com/divyanshuraj1095/OpenScout/blob/8c9aa3f92c032e09263f8a601d999f948e0bd070/docs/ARCHITECTURE.md#L15-L16"
+      } ]
+    }
+  }, {
+    "question" : "Which locking clause do workers use when claiming eligible rows?",
+    "arm" : "rag",
+    "elapsedMs" : 7906.4806,
+    "response" : {
+      "answer" : "Insufficient context.",
+      "grounded" : false,
+      "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+      "citations" : [ ]
+    }
+  }, {
+    "question" : "What is the name of the office cafeteria chef?",
+    "arm" : "rag",
+    "elapsedMs" : 151.816,
+    "response" : {
+      "answer" : "Insufficient context.",
+      "grounded" : false,
+      "indexVersion" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+      "citations" : [ ]
+    }
+  } ],
+  "model" : "qwen2.5:3b"
+}

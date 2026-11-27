@@ -1,0 +1,441 @@
+{
+  "rows" : [ {
+    "question" : "Which Java release targets the Maven application?",
+    "gold" : "c3",
+    "hits" : [ {
+      "id" : "c3",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 3,
+      "end" : 3,
+      "body" : "One Maven application under backend/, Java 21. Separate packages for identity, repositories, issues, bookmarks, indexing, retrieval, chat and preferences. Each owns its controllers, transactional services, persistence and DTOs. Controllers accept validated inputs and obtain the principal from Spring Security. Services enforce membership before reads, writes, cache lookups and provider spend.",
+      "similarity" : 0.7691419537065696
+    }, {
+      "id" : "c5",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 5,
+      "end" : 5,
+      "body" : "Use a stable Spring Boot 4.0.10 release with Spring AI BOM 2.0.2. Resolve and pin a supported GA patch and Maven wrapper in Phase 1, record effective POM, compile and run a context test on JDK 21 before accepting the pair. Boot manages Security, JPA/Hibernate, JDBC and Micrometer versions. Spring AI supplies replaceable embedding adapters. [Spring AI compatibility](https://docs.spring.io/spring-ai/reference/2.0/getting-started.html)",
+      "similarity" : 0.6707406643695594
+    }, {
+      "id" : "c13",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 13,
+      "end" : 13,
+      "body" : "**Operations and cost.** Start with one long-lived process and bounded background workers. Compose targets local or single-host operation with persistent volumes, HTTPS ingress, secret injection and tested backups. Ephemeral/serverless hosts cannot guarantee durable workers or local Ollama capacity. Confirm managed Postgres permits pgvector and reserve disk for concurrent generations. Recheck public visibility before serving indexed data and fail closed on unknown visibility. Send only necessary passages to hosted providers. Keep logs free of cookies, prompts and keys. Micrometer exposes latency, queue age, provider failures and token counts privately to Prometheus; Grafana visualizes them.",
+      "similarity" : 0.5670511811628609
+    } ],
+    "score" : 0.7691419537065696
+  }, {
+    "question" : "Which component owns DDL?",
+    "gold" : "c7",
+    "hits" : [ {
+      "id" : "c7",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 7,
+      "end" : 7,
+      "body" : "PostgreSQL provides transactions and durable job state. Flyway owns DDL and Hibernate validates it. pgvector enables an explicit parameterized distance query alongside relational authorization. Redis later handles expendable caches and atomic rate limits. GitHub REST supplies public source and issue metadata. Groq generates answers. Ollama serves local embeddings, with a configurable hosted adapter in production.",
+      "similarity" : 0.6198132693211938
+    }, {
+      "id" : "c3",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 3,
+      "end" : 3,
+      "body" : "One Maven application under backend/, Java 21. Separate packages for identity, repositories, issues, bookmarks, indexing, retrieval, chat and preferences. Each owns its controllers, transactional services, persistence and DTOs. Controllers accept validated inputs and obtain the principal from Spring Security. Services enforce membership before reads, writes, cache lookups and provider spend.",
+      "similarity" : 0.523174802197479
+    }, {
+      "id" : "c13",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 13,
+      "end" : 13,
+      "body" : "**Operations and cost.** Start with one long-lived process and bounded background workers. Compose targets local or single-host operation with persistent volumes, HTTPS ingress, secret injection and tested backups. Ephemeral/serverless hosts cannot guarantee durable workers or local Ollama capacity. Confirm managed Postgres permits pgvector and reserve disk for concurrent generations. Recheck public visibility before serving indexed data and fail closed on unknown visibility. Send only necessary passages to hosted providers. Keep logs free of cookies, prompts and keys. Micrometer exposes latency, queue age, provider failures and token counts privately to Prometheus; Grafana visualizes them.",
+      "similarity" : 0.49697178566132205
+    } ],
+    "score" : 0.6198132693211938
+  }, {
+    "question" : "How much repository text should leave the system for a hosted model?",
+    "gold" : "c13",
+    "hits" : [ {
+      "id" : "c11",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 11,
+      "end" : 11,
+      "body" : "**Retrieval.** RetrievalService checks membership and public visibility, pins the active index, embeds the question using its exact model, and selects top-k chunks constrained by repository and version before ranking. PromptBuilder separates instructions, question and quoted untrusted chunks with opaque IDs. No tools, command execution or document-directed actions. Bound input/output tokens. Accept only citation IDs present in this retrieval result. Build commit-pinned links and line ranges server-side. Abstain on weak evidence or invalid citations. Apply the same process to issue explanations and owner-scoped chat history.",
+      "similarity" : 0.6501971780078727
+    }, {
+      "id" : "c13",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 13,
+      "end" : 13,
+      "body" : "**Operations and cost.** Start with one long-lived process and bounded background workers. Compose targets local or single-host operation with persistent volumes, HTTPS ingress, secret injection and tested backups. Ephemeral/serverless hosts cannot guarantee durable workers or local Ollama capacity. Confirm managed Postgres permits pgvector and reserve disk for concurrent generations. Recheck public visibility before serving indexed data and fail closed on unknown visibility. Send only necessary passages to hosted providers. Keep logs free of cookies, prompts and keys. Micrometer exposes latency, queue age, provider failures and token counts privately to Prometheus; Grafana visualizes them.",
+      "similarity" : 0.6440270108983485
+    }, {
+      "id" : "c9",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 9,
+      "end" : 9,
+      "body" : "**Ingestion.** IndexService resolves a public repository and immutable commit, then enqueues a durable job. Workers claim eligible rows with SKIP LOCKED in short transactions. Bound worker count, provider batches, repository bytes, file sizes and tokens. Enumerate complete trees or fail on truncation. Skip binaries, generated/vendor files, secrets, symlinks and submodules. Split UTF-8 text at line boundaries with bounded overlap. Reuse matching content/chunker/model revisions, recording fresh path and line provenance. Exclude deleted paths from the new manifest. Commit batches idempotently. Retry transient failures with jitter, Retry-After and an attempt cap. Reclaim expired leases with fencing tokens. Promote the complete generation by compare-and-swap in one transaction. Readers retain their pinned generation until finished.",
+      "similarity" : 0.6432552505098027
+    } ],
+    "score" : 0.6440270108983485
+  }, {
+    "question" : "Which locking clause do workers use when claiming eligible rows?",
+    "gold" : "c9",
+    "hits" : [ {
+      "id" : "c9",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 9,
+      "end" : 9,
+      "body" : "**Ingestion.** IndexService resolves a public repository and immutable commit, then enqueues a durable job. Workers claim eligible rows with SKIP LOCKED in short transactions. Bound worker count, provider batches, repository bytes, file sizes and tokens. Enumerate complete trees or fail on truncation. Skip binaries, generated/vendor files, secrets, symlinks and submodules. Split UTF-8 text at line boundaries with bounded overlap. Reuse matching content/chunker/model revisions, recording fresh path and line provenance. Exclude deleted paths from the new manifest. Commit batches idempotently. Retry transient failures with jitter, Retry-After and an attempt cap. Reclaim expired leases with fencing tokens. Promote the complete generation by compare-and-swap in one transaction. Readers retain their pinned generation until finished.",
+      "similarity" : 0.6147793076889296
+    }, {
+      "id" : "c7",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 7,
+      "end" : 7,
+      "body" : "PostgreSQL provides transactions and durable job state. Flyway owns DDL and Hibernate validates it. pgvector enables an explicit parameterized distance query alongside relational authorization. Redis later handles expendable caches and atomic rate limits. GitHub REST supplies public source and issue metadata. Groq generates answers. Ollama serves local embeddings, with a configurable hosted adapter in production.",
+      "similarity" : 0.5824236476785598
+    }, {
+      "id" : "c11",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 11,
+      "end" : 11,
+      "body" : "**Retrieval.** RetrievalService checks membership and public visibility, pins the active index, embeds the question using its exact model, and selects top-k chunks constrained by repository and version before ranking. PromptBuilder separates instructions, question and quoted untrusted chunks with opaque IDs. No tools, command execution or document-directed actions. Bound input/output tokens. Accept only citation IDs present in this retrieval result. Build commit-pinned links and line ranges server-side. Abstain on weak evidence or invalid citations. Apply the same process to issue explanations and owner-scoped chat history.",
+      "similarity" : 0.5715122137302298
+    } ],
+    "score" : 0.6147793076889296
+  }, {
+    "question" : "What incremental service spend is targeted?",
+    "gold" : "c15",
+    "hits" : [ {
+      "id" : "c15",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 15,
+      "end" : 16,
+      "body" : "Student budget: target $0 incremental service spend on existing local hardware. Electricity and network usage vary. Use Compose for Postgres/pgvector, Redis, Ollama, Prometheus and Grafana as their phases arrive. Require explicit approval for paid resources. Free hosts may sleep or interrupt workers. Plan lease recovery, provider quota backoff and storage headroom for two vector generations. Capacity-test before offering persistent indexing.\nUse one public HTTPS origin with a trusted /api reverse proxy from Vercel to Render. Keep Set-Cookie host-only, bypass shared caching and forward Cookie, Origin, CSRF headers and Set-Cookie intact. Direct vercel.app to onrender.com cookies are third-party and may be blocked even with SameSite=None, Secure and credentialed CORS. Alternatively use same-site custom HTTPS subdomains and exact CORS. Verify login, CSRF, expiry and logout in browsers that block third-party cookies before release. See https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/Third-party_cookies",
+      "similarity" : 0.6458578805245887
+    }, {
+      "id" : "c13",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 13,
+      "end" : 13,
+      "body" : "**Operations and cost.** Start with one long-lived process and bounded background workers. Compose targets local or single-host operation with persistent volumes, HTTPS ingress, secret injection and tested backups. Ephemeral/serverless hosts cannot guarantee durable workers or local Ollama capacity. Confirm managed Postgres permits pgvector and reserve disk for concurrent generations. Recheck public visibility before serving indexed data and fail closed on unknown visibility. Send only necessary passages to hosted providers. Keep logs free of cookies, prompts and keys. Micrometer exposes latency, queue age, provider failures and token counts privately to Prometheus; Grafana visualizes them.",
+      "similarity" : 0.5728403668344046
+    }, {
+      "id" : "c9",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 9,
+      "end" : 9,
+      "body" : "**Ingestion.** IndexService resolves a public repository and immutable commit, then enqueues a durable job. Workers claim eligible rows with SKIP LOCKED in short transactions. Bound worker count, provider batches, repository bytes, file sizes and tokens. Enumerate complete trees or fail on truncation. Skip binaries, generated/vendor files, secrets, symlinks and submodules. Split UTF-8 text at line boundaries with bounded overlap. Reuse matching content/chunker/model revisions, recording fresh path and line provenance. Exclude deleted paths from the new manifest. Commit batches idempotently. Retry transient failures with jitter, Retry-After and an attempt cap. Reclaim expired leases with fencing tokens. Promote the complete generation by compare-and-swap in one transaction. Readers retain their pinned generation until finished.",
+      "similarity" : 0.5709141834208666
+    } ],
+    "score" : 0.6458578805245887
+  }, {
+    "question" : "Where must accepted citation IDs come from?",
+    "gold" : "c11",
+    "hits" : [ {
+      "id" : "c11",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 11,
+      "end" : 11,
+      "body" : "**Retrieval.** RetrievalService checks membership and public visibility, pins the active index, embeds the question using its exact model, and selects top-k chunks constrained by repository and version before ranking. PromptBuilder separates instructions, question and quoted untrusted chunks with opaque IDs. No tools, command execution or document-directed actions. Bound input/output tokens. Accept only citation IDs present in this retrieval result. Build commit-pinned links and line ranges server-side. Abstain on weak evidence or invalid citations. Apply the same process to issue explanations and owner-scoped chat history.",
+      "similarity" : 0.6715464174255787
+    }, {
+      "id" : "c7",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 7,
+      "end" : 7,
+      "body" : "PostgreSQL provides transactions and durable job state. Flyway owns DDL and Hibernate validates it. pgvector enables an explicit parameterized distance query alongside relational authorization. Redis later handles expendable caches and atomic rate limits. GitHub REST supplies public source and issue metadata. Groq generates answers. Ollama serves local embeddings, with a configurable hosted adapter in production.",
+      "similarity" : 0.5974745997877403
+    }, {
+      "id" : "c9",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 9,
+      "end" : 9,
+      "body" : "**Ingestion.** IndexService resolves a public repository and immutable commit, then enqueues a durable job. Workers claim eligible rows with SKIP LOCKED in short transactions. Bound worker count, provider batches, repository bytes, file sizes and tokens. Enumerate complete trees or fail on truncation. Skip binaries, generated/vendor files, secrets, symlinks and submodules. Split UTF-8 text at line boundaries with bounded overlap. Reuse matching content/chunker/model revisions, recording fresh path and line provenance. Exclude deleted paths from the new manifest. Commit batches idempotently. Retry transient failures with jitter, Retry-After and an attempt cap. Reclaim expired leases with fencing tokens. Promote the complete generation by compare-and-swap in one transaction. Readers retain their pinned generation until finished.",
+      "similarity" : 0.5744683641066992
+    } ],
+    "score" : 0.6715464174255787
+  }, {
+    "question" : "Which one is better?",
+    "gold" : "",
+    "hits" : [ {
+      "id" : "c7",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 7,
+      "end" : 7,
+      "body" : "PostgreSQL provides transactions and durable job state. Flyway owns DDL and Hibernate validates it. pgvector enables an explicit parameterized distance query alongside relational authorization. Redis later handles expendable caches and atomic rate limits. GitHub REST supplies public source and issue metadata. Groq generates answers. Ollama serves local embeddings, with a configurable hosted adapter in production.",
+      "similarity" : 0.5347294329348773
+    }, {
+      "id" : "c11",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 11,
+      "end" : 11,
+      "body" : "**Retrieval.** RetrievalService checks membership and public visibility, pins the active index, embeds the question using its exact model, and selects top-k chunks constrained by repository and version before ranking. PromptBuilder separates instructions, question and quoted untrusted chunks with opaque IDs. No tools, command execution or document-directed actions. Bound input/output tokens. Accept only citation IDs present in this retrieval result. Build commit-pinned links and line ranges server-side. Abstain on weak evidence or invalid citations. Apply the same process to issue explanations and owner-scoped chat history.",
+      "similarity" : 0.528725187670423
+    }, {
+      "id" : "c13",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 13,
+      "end" : 13,
+      "body" : "**Operations and cost.** Start with one long-lived process and bounded background workers. Compose targets local or single-host operation with persistent volumes, HTTPS ingress, secret injection and tested backups. Ephemeral/serverless hosts cannot guarantee durable workers or local Ollama capacity. Confirm managed Postgres permits pgvector and reserve disk for concurrent generations. Recheck public visibility before serving indexed data and fail closed on unknown visibility. Send only necessary passages to hosted providers. Keep logs free of cookies, prompts and keys. Micrometer exposes latency, queue age, provider failures and token counts privately to Prometheus; Grafana visualizes them.",
+      "similarity" : 0.5267582314961214
+    } ],
+    "score" : 0.5347294329348773
+  }, {
+    "question" : "What payroll software does the engineering team use?",
+    "gold" : "",
+    "hits" : [ {
+      "id" : "c13",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 13,
+      "end" : 13,
+      "body" : "**Operations and cost.** Start with one long-lived process and bounded background workers. Compose targets local or single-host operation with persistent volumes, HTTPS ingress, secret injection and tested backups. Ephemeral/serverless hosts cannot guarantee durable workers or local Ollama capacity. Confirm managed Postgres permits pgvector and reserve disk for concurrent generations. Recheck public visibility before serving indexed data and fail closed on unknown visibility. Send only necessary passages to hosted providers. Keep logs free of cookies, prompts and keys. Micrometer exposes latency, queue age, provider failures and token counts privately to Prometheus; Grafana visualizes them.",
+      "similarity" : 0.5964787487413669
+    }, {
+      "id" : "c7",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 7,
+      "end" : 7,
+      "body" : "PostgreSQL provides transactions and durable job state. Flyway owns DDL and Hibernate validates it. pgvector enables an explicit parameterized distance query alongside relational authorization. Redis later handles expendable caches and atomic rate limits. GitHub REST supplies public source and issue metadata. Groq generates answers. Ollama serves local embeddings, with a configurable hosted adapter in production.",
+      "similarity" : 0.5936189051639644
+    }, {
+      "id" : "c15",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 15,
+      "end" : 16,
+      "body" : "Student budget: target $0 incremental service spend on existing local hardware. Electricity and network usage vary. Use Compose for Postgres/pgvector, Redis, Ollama, Prometheus and Grafana as their phases arrive. Require explicit approval for paid resources. Free hosts may sleep or interrupt workers. Plan lease recovery, provider quota backoff and storage headroom for two vector generations. Capacity-test before offering persistent indexing.\nUse one public HTTPS origin with a trusted /api reverse proxy from Vercel to Render. Keep Set-Cookie host-only, bypass shared caching and forward Cookie, Origin, CSRF headers and Set-Cookie intact. Direct vercel.app to onrender.com cookies are third-party and may be blocked even with SameSite=None, Secure and credentialed CORS. Alternatively use same-site custom HTTPS subdomains and exact CORS. Verify login, CSRF, expiry and logout in browsers that block third-party cookies before release. See https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/Third-party_cookies",
+      "similarity" : 0.5817905631792483
+    } ],
+    "score" : 0.5964787487413669
+  }, {
+    "question" : "What is the documented Kafka broker hostname?",
+    "gold" : "",
+    "hits" : [ {
+      "id" : "c13",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 13,
+      "end" : 13,
+      "body" : "**Operations and cost.** Start with one long-lived process and bounded background workers. Compose targets local or single-host operation with persistent volumes, HTTPS ingress, secret injection and tested backups. Ephemeral/serverless hosts cannot guarantee durable workers or local Ollama capacity. Confirm managed Postgres permits pgvector and reserve disk for concurrent generations. Recheck public visibility before serving indexed data and fail closed on unknown visibility. Send only necessary passages to hosted providers. Keep logs free of cookies, prompts and keys. Micrometer exposes latency, queue age, provider failures and token counts privately to Prometheus; Grafana visualizes them.",
+      "similarity" : 0.5863677160302213
+    }, {
+      "id" : "c7",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 7,
+      "end" : 7,
+      "body" : "PostgreSQL provides transactions and durable job state. Flyway owns DDL and Hibernate validates it. pgvector enables an explicit parameterized distance query alongside relational authorization. Redis later handles expendable caches and atomic rate limits. GitHub REST supplies public source and issue metadata. Groq generates answers. Ollama serves local embeddings, with a configurable hosted adapter in production.",
+      "similarity" : 0.5832412590528544
+    }, {
+      "id" : "c15",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 15,
+      "end" : 16,
+      "body" : "Student budget: target $0 incremental service spend on existing local hardware. Electricity and network usage vary. Use Compose for Postgres/pgvector, Redis, Ollama, Prometheus and Grafana as their phases arrive. Require explicit approval for paid resources. Free hosts may sleep or interrupt workers. Plan lease recovery, provider quota backoff and storage headroom for two vector generations. Capacity-test before offering persistent indexing.\nUse one public HTTPS origin with a trusted /api reverse proxy from Vercel to Render. Keep Set-Cookie host-only, bypass shared caching and forward Cookie, Origin, CSRF headers and Set-Cookie intact. Direct vercel.app to onrender.com cookies are third-party and may be blocked even with SameSite=None, Secure and credentialed CORS. Alternatively use same-site custom HTTPS subdomains and exact CORS. Verify login, CSRF, expiry and logout in browsers that block third-party cookies before release. See https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/Third-party_cookies",
+      "similarity" : 0.5532556595011477
+    } ],
+    "score" : 0.5863677160302213
+  }, {
+    "question" : "How many CPU cores does the production database have?",
+    "gold" : "",
+    "hits" : [ {
+      "id" : "c7",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 7,
+      "end" : 7,
+      "body" : "PostgreSQL provides transactions and durable job state. Flyway owns DDL and Hibernate validates it. pgvector enables an explicit parameterized distance query alongside relational authorization. Redis later handles expendable caches and atomic rate limits. GitHub REST supplies public source and issue metadata. Groq generates answers. Ollama serves local embeddings, with a configurable hosted adapter in production.",
+      "similarity" : 0.6000407278574487
+    }, {
+      "id" : "c13",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 13,
+      "end" : 13,
+      "body" : "**Operations and cost.** Start with one long-lived process and bounded background workers. Compose targets local or single-host operation with persistent volumes, HTTPS ingress, secret injection and tested backups. Ephemeral/serverless hosts cannot guarantee durable workers or local Ollama capacity. Confirm managed Postgres permits pgvector and reserve disk for concurrent generations. Recheck public visibility before serving indexed data and fail closed on unknown visibility. Send only necessary passages to hosted providers. Keep logs free of cookies, prompts and keys. Micrometer exposes latency, queue age, provider failures and token counts privately to Prometheus; Grafana visualizes them.",
+      "similarity" : 0.5869844627096993
+    }, {
+      "id" : "c9",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 9,
+      "end" : 9,
+      "body" : "**Ingestion.** IndexService resolves a public repository and immutable commit, then enqueues a durable job. Workers claim eligible rows with SKIP LOCKED in short transactions. Bound worker count, provider batches, repository bytes, file sizes and tokens. Enumerate complete trees or fail on truncation. Skip binaries, generated/vendor files, secrets, symlinks and submodules. Split UTF-8 text at line boundaries with bounded overlap. Reuse matching content/chunker/model revisions, recording fresh path and line provenance. Exclude deleted paths from the new manifest. Commit batches idempotently. Retry transient failures with jitter, Retry-After and an attempt cap. Reclaim expired leases with fencing tokens. Promote the complete generation by compare-and-swap in one transaction. Readers retain their pinned generation until finished.",
+      "similarity" : 0.5770844301208614
+    } ],
+    "score" : 0.6000407278574487
+  }, {
+    "question" : "What value should I set it to?",
+    "gold" : "",
+    "hits" : [ {
+      "id" : "c15",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 15,
+      "end" : 16,
+      "body" : "Student budget: target $0 incremental service spend on existing local hardware. Electricity and network usage vary. Use Compose for Postgres/pgvector, Redis, Ollama, Prometheus and Grafana as their phases arrive. Require explicit approval for paid resources. Free hosts may sleep or interrupt workers. Plan lease recovery, provider quota backoff and storage headroom for two vector generations. Capacity-test before offering persistent indexing.\nUse one public HTTPS origin with a trusted /api reverse proxy from Vercel to Render. Keep Set-Cookie host-only, bypass shared caching and forward Cookie, Origin, CSRF headers and Set-Cookie intact. Direct vercel.app to onrender.com cookies are third-party and may be blocked even with SameSite=None, Secure and credentialed CORS. Alternatively use same-site custom HTTPS subdomains and exact CORS. Verify login, CSRF, expiry and logout in browsers that block third-party cookies before release. See https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/Third-party_cookies",
+      "similarity" : 0.5773894614760604
+    }, {
+      "id" : "c9",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 9,
+      "end" : 9,
+      "body" : "**Ingestion.** IndexService resolves a public repository and immutable commit, then enqueues a durable job. Workers claim eligible rows with SKIP LOCKED in short transactions. Bound worker count, provider batches, repository bytes, file sizes and tokens. Enumerate complete trees or fail on truncation. Skip binaries, generated/vendor files, secrets, symlinks and submodules. Split UTF-8 text at line boundaries with bounded overlap. Reuse matching content/chunker/model revisions, recording fresh path and line provenance. Exclude deleted paths from the new manifest. Commit batches idempotently. Retry transient failures with jitter, Retry-After and an attempt cap. Reclaim expired leases with fencing tokens. Promote the complete generation by compare-and-swap in one transaction. Readers retain their pinned generation until finished.",
+      "similarity" : 0.566145644926901
+    }, {
+      "id" : "c13",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 13,
+      "end" : 13,
+      "body" : "**Operations and cost.** Start with one long-lived process and bounded background workers. Compose targets local or single-host operation with persistent volumes, HTTPS ingress, secret injection and tested backups. Ephemeral/serverless hosts cannot guarantee durable workers or local Ollama capacity. Confirm managed Postgres permits pgvector and reserve disk for concurrent generations. Recheck public visibility before serving indexed data and fail closed on unknown visibility. Send only necessary passages to hosted providers. Keep logs free of cookies, prompts and keys. Micrometer exposes latency, queue age, provider failures and token counts privately to Prometheus; Grafana visualizes them.",
+      "similarity" : 0.5659633144380782
+    } ],
+    "score" : 0.5773894614760604
+  }, {
+    "question" : "What is the password printed by the monitoring dashboard?",
+    "gold" : "",
+    "hits" : [ {
+      "id" : "c13",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 13,
+      "end" : 13,
+      "body" : "**Operations and cost.** Start with one long-lived process and bounded background workers. Compose targets local or single-host operation with persistent volumes, HTTPS ingress, secret injection and tested backups. Ephemeral/serverless hosts cannot guarantee durable workers or local Ollama capacity. Confirm managed Postgres permits pgvector and reserve disk for concurrent generations. Recheck public visibility before serving indexed data and fail closed on unknown visibility. Send only necessary passages to hosted providers. Keep logs free of cookies, prompts and keys. Micrometer exposes latency, queue age, provider failures and token counts privately to Prometheus; Grafana visualizes them.",
+      "similarity" : 0.6009706493721241
+    }, {
+      "id" : "c15",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 15,
+      "end" : 16,
+      "body" : "Student budget: target $0 incremental service spend on existing local hardware. Electricity and network usage vary. Use Compose for Postgres/pgvector, Redis, Ollama, Prometheus and Grafana as their phases arrive. Require explicit approval for paid resources. Free hosts may sleep or interrupt workers. Plan lease recovery, provider quota backoff and storage headroom for two vector generations. Capacity-test before offering persistent indexing.\nUse one public HTTPS origin with a trusted /api reverse proxy from Vercel to Render. Keep Set-Cookie host-only, bypass shared caching and forward Cookie, Origin, CSRF headers and Set-Cookie intact. Direct vercel.app to onrender.com cookies are third-party and may be blocked even with SameSite=None, Secure and credentialed CORS. Alternatively use same-site custom HTTPS subdomains and exact CORS. Verify login, CSRF, expiry and logout in browsers that block third-party cookies before release. See https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/Third-party_cookies",
+      "similarity" : 0.5736910451418415
+    }, {
+      "id" : "c7",
+      "path" : "docs/ARCHITECTURE.md",
+      "start" : 7,
+      "end" : 7,
+      "body" : "PostgreSQL provides transactions and durable job state. Flyway owns DDL and Hibernate validates it. pgvector enables an explicit parameterized distance query alongside relational authorization. Redis later handles expendable caches and atomic rate limits. GitHub REST supplies public source and issue metadata. Groq generates answers. Ollama serves local embeddings, with a configurable hosted adapter in production.",
+      "similarity" : 0.5720303823893589
+    } ],
+    "score" : 0.6009706493721241
+  } ],
+  "index" : "8c9aa3f92c032e09263f8a601d999f948e0bd070/paragraph-v1/ollama/nomic-embed-text/0a109f422b47e3a30ba2b10eca18548e944e8a23073ee3f3e947efcf3c45e59f",
+  "threshold" : 0.61,
+  "sweep" : [ {
+    "threshold" : 0.4,
+    "correct" : 6
+  }, {
+    "threshold" : 0.41,
+    "correct" : 6
+  }, {
+    "threshold" : 0.42,
+    "correct" : 6
+  }, {
+    "threshold" : 0.43,
+    "correct" : 6
+  }, {
+    "threshold" : 0.44,
+    "correct" : 6
+  }, {
+    "threshold" : 0.45,
+    "correct" : 6
+  }, {
+    "threshold" : 0.46,
+    "correct" : 6
+  }, {
+    "threshold" : 0.47,
+    "correct" : 6
+  }, {
+    "threshold" : 0.48,
+    "correct" : 6
+  }, {
+    "threshold" : 0.49,
+    "correct" : 6
+  }, {
+    "threshold" : 0.5,
+    "correct" : 6
+  }, {
+    "threshold" : 0.51,
+    "correct" : 6
+  }, {
+    "threshold" : 0.52,
+    "correct" : 6
+  }, {
+    "threshold" : 0.53,
+    "correct" : 6
+  }, {
+    "threshold" : 0.54,
+    "correct" : 7
+  }, {
+    "threshold" : 0.55,
+    "correct" : 7
+  }, {
+    "threshold" : 0.56,
+    "correct" : 7
+  }, {
+    "threshold" : 0.57,
+    "correct" : 7
+  }, {
+    "threshold" : 0.58,
+    "correct" : 8
+  }, {
+    "threshold" : 0.59,
+    "correct" : 9
+  }, {
+    "threshold" : 0.6,
+    "correct" : 10
+  }, {
+    "threshold" : 0.61,
+    "correct" : 12
+  }, {
+    "threshold" : 0.62,
+    "correct" : 10
+  }, {
+    "threshold" : 0.63,
+    "correct" : 10
+  }, {
+    "threshold" : 0.64,
+    "correct" : 10
+  }, {
+    "threshold" : 0.65,
+    "correct" : 8
+  }, {
+    "threshold" : 0.66,
+    "correct" : 8
+  }, {
+    "threshold" : 0.67,
+    "correct" : 8
+  }, {
+    "threshold" : 0.68,
+    "correct" : 7
+  }, {
+    "threshold" : 0.69,
+    "correct" : 7
+  }, {
+    "threshold" : 0.7,
+    "correct" : 7
+  }, {
+    "threshold" : 0.71,
+    "correct" : 7
+  }, {
+    "threshold" : 0.72,
+    "correct" : 7
+  }, {
+    "threshold" : 0.73,
+    "correct" : 7
+  }, {
+    "threshold" : 0.74,
+    "correct" : 7
+  }, {
+    "threshold" : 0.75,
+    "correct" : 7
+  }, {
+    "threshold" : 0.76,
+    "correct" : 7
+  }, {
+    "threshold" : 0.77,
+    "correct" : 6
+  }, {
+    "threshold" : 0.78,
+    "correct" : 6
+  }, {
+    "threshold" : 0.79,
+    "correct" : 6
+  }, {
+    "threshold" : 0.8,
+    "correct" : 6
+  } ]
+}
