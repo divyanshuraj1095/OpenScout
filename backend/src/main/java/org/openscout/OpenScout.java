@@ -4,5 +4,5 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class OpenScout {
-    public static void main(String[] args) { SpringApplication.run(OpenScout.class, args); }
+    public static void main(String[] args) { java.util.TimeZone.setDefault(java.util.TimeZone.getTimeZone("UTC")); SpringApplication.run(OpenScout.class, args); }
 }

@@ -1,8 +1,10 @@
 services:
   db:
     image: postgres:17
+    command: [postgres, -c, timezone=UTC, -c, log_timezone=UTC]
     ports: ["127.0.0.1:5433:5432"]
     environment:
+      TZ: UTC
       POSTGRES_DB: openscout_dev
       POSTGRES_USER: openscout_dev
       POSTGRES_PASSWORD: ${OPENSCOUT_DEV_PASSWORD:?set development password}

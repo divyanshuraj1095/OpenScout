@@ -17,6 +17,7 @@ paths:
               required: [name,email,password]
               properties:
                 name: {type: string, maxLength: 100}
+                gitHubURL: {type: string, format: uri}
                 email: {type: string, format: email}
                 password: {type: string, minLength: 12, maxLength: 72}
       responses:
@@ -56,6 +57,93 @@ paths:
       responses:
         '200': {description: Healthy}
         '503': {description: Unhealthy}
+  /api/v1/repositories:
+    get:
+      summary: List member repositories
+      parameters:
+        - {in: query, name: page, schema: {type: integer, minimum: 1, default: 1}}
+        - {in: query, name: limit, schema: {type: integer, minimum: 1, maximum: 100, default: 20}}
+      security: [{session: []}]
+      responses:
+        '200': {description: List member repositories}
+    post:
+      summary: Import or synchronize public repository
+      security: [{session: []}]
+      parameters: [{$ref: '#/components/parameters/CSRF'}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [repoUrl]
+              properties:
+                repoUrl: {type: string, format: uri}
+      responses:
+        '201': {description: Import or synchronize public repository}
+        '200': {description: Already imported}
+  /api/v1/repositories/{id}/refresh:
+    parameters:
+      - {in: path, name: id, required: true, schema: {type: integer, format: int64}}
+    post:
+      summary: Refresh a member repository
+      security: [{session: []}]
+      parameters: [{$ref: '#/components/parameters/CSRF'}]
+      responses:
+        '200': {description: Refresh a member repository}
+  /api/v1/issues:
+    get:
+      summary: Filter and paginate accessible issues
+      parameters:
+        - {in: query, name: page, schema: {type: integer, minimum: 1, default: 1}}
+        - {in: query, name: limit, schema: {type: integer, minimum: 1, maximum: 100, default: 20}}
+        - {in: query, name: repositoryId, schema: {type: string}}
+        - {in: query, name: label, schema: {type: string}}
+        - {in: query, name: language, schema: {type: string}}
+        - {in: query, name: difficulty, schema: {type: string}}
+        - {in: query, name: q, schema: {type: string}}
+        - {in: query, name: state, schema: {type: string}}
+      security: [{session: []}]
+      responses:
+        '200': {description: Filter and paginate accessible issues}
+  /api/v1/issues/{id}:
+    parameters:
+      - {in: path, name: id, required: true, schema: {type: integer, format: int64}}
+    get:
+      summary: Get accessible issue detail
+      security: [{session: []}]
+      responses:
+        '200': {description: Get accessible issue detail}
+  /api/v1/bookmarks:
+    get:
+      summary: List personal bookmarks
+      parameters:
+        - {in: query, name: page, schema: {type: integer, minimum: 1, default: 1}}
+        - {in: query, name: limit, schema: {type: integer, minimum: 1, maximum: 100, default: 20}}
+        - {in: query, name: repositoryId, schema: {type: string}}
+        - {in: query, name: label, schema: {type: string}}
+        - {in: query, name: language, schema: {type: string}}
+        - {in: query, name: difficulty, schema: {type: string}}
+        - {in: query, name: q, schema: {type: string}}
+        - {in: query, name: state, schema: {type: string}}
+      security: [{session: []}]
+      responses:
+        '200': {description: List personal bookmarks}
+  /api/v1/bookmarks/{id}:
+    parameters:
+      - {in: path, name: id, required: true, schema: {type: integer, format: int64}}
+    put:
+      summary: Bookmark accessible issue
+      security: [{session: []}]
+      parameters: [{$ref: '#/components/parameters/CSRF'}]
+      responses:
+        '204': {description: Bookmark accessible issue}
+    delete:
+      summary: Remove personal bookmark
+      security: [{session: []}]
+      parameters: [{$ref: '#/components/parameters/CSRF'}]
+      responses:
+        '204': {description: Remove personal bookmark}
 components:
   parameters:
     CSRF: {in: header, name: X-CSRF-TOKEN, required: true, schema: {type: string}}

@@ -31,10 +31,11 @@ class IdentityController {
         dummyHash=passwords.encode(UUID.randomUUID().toString());
     }
     record Signup(@NotBlank @Size(max=100) String name, @Email @NotBlank @Size(max=254) String email,
-                  @NotBlank @Size(min=12,max=72) String password) {}
+                  @NotBlank @Size(min=12,max=72) String password,
+                  @Pattern(regexp="(?:https://github[.]com/[A-Za-z0-9-]{1,39}/?)?") String gitHubURL) {}
     record Login(@Email @NotBlank @Size(max=254) String email, @NotBlank @Size(max=72) String password) {}
-    record Profile(UUID id,String name,String email) {
-        Profile(Account a) { this(a.id,a.name,a.email); }
+    record Profile(UUID id,String name,String email,String gitHubURL,Instant createdAt,long openedRepos) {
+        Profile(Account a,long count) { this(a.id,a.name,a.email,a.githubUrl,a.createdAt,count); }
     }
     static String normalize(String email) { return email.strip().toLowerCase(Locale.ROOT); }
     @GetMapping("/auth/csrf") Map<String,String> csrf(CsrfToken token) {
@@ -44,7 +45,7 @@ class IdentityController {
     Profile signup(@Valid @RequestBody Signup input) {
         if (input.password().getBytes(StandardCharsets.UTF_8).length > 72)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        return new Profile(accounts.saveAndFlush(new Account(input.name().strip(),normalize(input.email()),passwords.encode(input.password()))));
+        return new Profile(accounts.saveAndFlush(new Account(input.name().strip(),normalize(input.email()),passwords.encode(input.password()),input.gitHubURL())),0);
     }
     @Transactional @PostMapping("/auth/login")
     Profile login(@Valid @RequestBody Login input,HttpServletRequest request,HttpServletResponse response) {
@@ -60,10 +61,11 @@ class IdentityController {
         var session=sessions.save(new LoginSession(user.id,Instant.now().plus(ttl)));
         request.getSession().invalidate();
         cookie(response,tokens.issue(session),ttl);
-        return new Profile(user);
+        return new Profile(user,accounts.importedCount(user.id));
     }
     @GetMapping("/me") Profile profile(@AuthenticationPrincipal Jwt jwt) {
-        return new Profile(accounts.findById(UUID.fromString(jwt.getSubject())).orElseThrow());
+        UUID id=UUID.fromString(jwt.getSubject());
+        return new Profile(accounts.findById(id).orElseThrow(),accounts.importedCount(id));
     }
     @Transactional @PostMapping("/auth/logout") @ResponseStatus(HttpStatus.NO_CONTENT)
     void logout(@AuthenticationPrincipal Jwt jwt,HttpServletRequest request,HttpServletResponse response) {

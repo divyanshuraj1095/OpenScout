@@ -8,11 +8,15 @@ class Account {
     String name;
     String email;
     String passwordHash;
+    String githubUrl;
+    java.time.Instant createdAt;
     protected Account() {}
-    Account(String name, String email, String passwordHash) {
+    Account(String name, String email, String passwordHash,String githubUrl) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.email = email;
         this.passwordHash = passwordHash;
+        this.githubUrl = githubUrl;
+        this.createdAt = java.time.Instant.now();
     }
 }
