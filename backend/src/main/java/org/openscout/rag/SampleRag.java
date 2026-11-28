@@ -92,27 +92,51 @@ class SampleRag {
     }
     Answer ask(UUID user,long repo,String question){
         var hits=retrieve(user,repo,question).stream().filter(h->h.similarity()>=threshold).toList();
-        if(hits.isEmpty()) return abstain();
+        return answer(user,repo,question,hits,version,SampleCorpus.COMMIT,null);
+    }
+    Answer askIndexed(UUID user,long repo,String question){
+        authorizeDisclosure(user,repo);
+        if(question==null || question.isBlank() || question.length()>1000) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        record Generation(UUID version,String commit,String url){}
+        var gen=db.sql("""
+            SELECT i.version,i.commit_sha,r.url FROM repository_indexes i JOIN repositories r ON r.id=i.repository_id
+            WHERE i.repository_id=? AND i.status='active' AND i.space=? AND i.dimensions=768
+            """).params(repo,space).query((rs,n)->new Generation(rs.getObject(1,UUID.class),rs.getString(2),rs.getString(3)))
+            .optional().orElseThrow(()->new ResponseStatusException(HttpStatus.CONFLICT,"Compatible index unavailable"));
+        String embedding=vector(encoder.encode("search_query: "+question));
+        var hits=db.sql("""
+            SELECT path,start_line,end_line,body,1-(embedding <=> CAST(:embedding AS vector)) AS score
+            FROM repository_vectors WHERE repository_id=:repo AND version=:version AND EXISTS(SELECT 1
+            """+SCOPE+") ORDER BY score DESC,path,start_line LIMIT 3").param("embedding",embedding).param("repo",repo)
+            .param("user",user).param("version",gen.version()).query((rs,n)->new Hit("c"+(n+1),rs.getString(1),rs.getInt(2),
+                rs.getInt(3),rs.getString(4),rs.getDouble(5))).list().stream().filter(h->h.similarity()>=threshold).toList();
+        return answer(user,repo,question,hits,gen.version().toString(),gen.commit(),gen.url());
+    }
+    private Answer answer(UUID user,long repo,String question,List<Hit> hits,String generation,String commit,String url){
+        if(hits.isEmpty()) return abstain(generation);
         authorizeDisclosure(user,repo);
         String input=json.writeValueAsString(Map.of("question",question,"evidence",hits.stream()
             .map(h->Map.of("chunkId",h.id(),"text",h.body())).toList()));
-        var result=validate(generator.generate(INSTRUCTIONS,input),hits);
+        var result=validate(generator.generate(INSTRUCTIONS,input),hits,generation,commit,url);
         authorizeDisclosure(user,repo);
         return result;
     }
     Answer validate(String output,List<Hit> hits){
+        return validate(output,hits,version,SampleCorpus.COMMIT,null);
+    }
+    private Answer validate(String output,List<Hit> hits,String generation,String commit,String url){
         try {
             var parsed=json.readTree(output);
             String quote=parsed.path("quote").asString("").strip();
             String id=parsed.path("chunkId").asString("");
             for(var h:hits){
                 if(h.id().equals(id) && !quote.isBlank() && h.body().contains(quote)){
-                    var citation=new Citation(id,h.path(),h.start(),h.end(),SampleCorpus.COMMIT,SampleCorpus.URL+"#L"+h.start()+"-L"+h.end());
-                    return new Answer(quote,true,version,List.of(citation));
+                    var citation=new Citation(id,h.path(),h.start(),h.end(),commit,(url==null?SampleCorpus.URL:url+"/blob/"+commit+"/"+h.path())+"#L"+h.start()+"-L"+h.end());
+                    return new Answer(quote,true,generation,List.of(citation));
                 }
             }
         } catch(RuntimeException ignored){ /* Malformed model output is insufficient evidence. */ }
-        return abstain();
+        return abstain(generation);
     }
-    private Answer abstain(){return new Answer("Insufficient context.",false,version,List.of());}
+    private Answer abstain(String generation){return new Answer("Insufficient context.",false,generation,List.of());}
 }

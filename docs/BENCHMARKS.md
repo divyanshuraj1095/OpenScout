@@ -94,3 +94,22 @@ Two RAG answers correctly identified Spring Security and the active index. Two m
 Latency excludes client HTTP and remote GitHub latency. The test used a mock visibility authority, real database checks and local model calls. Medians include the first request. p95 uses nearest rank. These are single-run, local measurements on eight passages. The threshold was kept frozen after seeing the weaker held-out results. No hosted generation was run.
 
 [Inputs, commands and protocol](../benchmarks/phase3-expanded/methodology.md) · [Freeze record](../benchmarks/phase3-expanded/freeze.json) · [Baseline outputs](../benchmarks/phase3-expanded/baseline.json) · [RAG outputs, pre-validation text and timings](../benchmarks/phase3-expanded/rag.json) · [Scores by question](../benchmarks/phase3-expanded/scores.json)
+
+## Phase 4 repository indexing
+
+The workload was frozen at eight small one-chunk Markdown files; the second revision modifies exactly one. Tests use the production queue, chunker, JDBC writes and Spring AI Ollama adapter, real PostgreSQL 17/pgvector, a deterministic GitHub fixture and a mocked visibility authority. One caller, one sequential pass per revision, no dedicated warm-up. Timings cover enqueue through promotion and include claim, network embedding and database work. Fixture requests count HEAD, recursive tree and blob reads. Provider calls count adapter batches; inputs count embedded passages. Vector storage is pg_column_size of the vector values, excluding relation/index overhead. Each revision stored 24,608 vector bytes in all four arms.
+
+| Revision 2 | Duration ms | Files/s | Embedding inputs | Provider calls | Fixture requests |
+|---|---:|---:|---:|---:|---:|
+| Full sequential | 1,656.54 | 4.83 | 8 | 8 | 10 |
+| Full batch | 1,176.01 | 6.80 | 8 | 1 | 10 |
+| Incremental sequential | 400.14 | 19.99 | 1 | 1 | 3 |
+| Incremental batch | 361.01 | 22.16 | 1 | 1 | 3 |
+
+The pre-optimization full sequential control took 1,125.78 ms on its second revision. The matrix repeated that arm after adding selectable reuse and batching. The two controls illustrate run-to-run variation. Incremental indexing avoided seven document embeddings and seven blob reads on this workload; it still copied eight vectors into the new generation. Full batching lowered the number of model calls without reducing the number of embedded inputs. These are local fixture observations.
+
+An independent recovery test forced the lease expiry in PostgreSQL and measured 2.95 ms from eligibility to successful manual reclaim. A real worker crash also incurs the remaining lease timeout (up to 90 seconds), poll interval and executor/database availability. An old-generation question completed in 14.84 ms with deterministic providers while the replacement was paused inside a blob read. The live smoke indexed one real chunk from numeric GitHub repository 1296269 at commit 7fd1a60b01f91b314f59955a4e4d4e80d8edf11d using local Ollama.
+
+[Original control](../benchmarks/phase4/full-sequential.json) · [Repeated control](../benchmarks/phase4/full-sequential-repeat.json) · [Full batch](../benchmarks/phase4/full-batch.json) · [Incremental sequential](../benchmarks/phase4/incremental-sequential.json) · [Incremental batch](../benchmarks/phase4/incremental-batch.json) · [Recovery](../benchmarks/phase4/recovery.json) · [Availability](../benchmarks/phase4/availability.json) · [Live smoke](../benchmarks/phase4/live.json) · [Reproduce](../benchmarks/phase4/run.ps1)
+
+A separate sharing control indexed the same eight-file fixture twice in isolated repository partitions to simulate two private materializations. It completed two jobs, performed 20 source requests and took 4,661.60 ms. Two member requests sharing one repository returned one job, performed 10 source requests and took 853.81 ms. The separate arm ran first, so model warm-up and order confound the timing difference. Job and request counts demonstrate the shared-work guarantee. [Raw sharing comparison](../benchmarks/phase4/sharing.json)

@@ -1,0 +1,15 @@
+[ {
+  "providerCalls" : 1,
+  "revision" : 1,
+  "vectorBytes" : 24608,
+  "elapsedMs" : 3374.8267,
+  "fixtureRequests" : 10,
+  "embeddingInputs" : 8
+}, {
+  "providerCalls" : 1,
+  "revision" : 2,
+  "vectorBytes" : 24608,
+  "elapsedMs" : 361.0126,
+  "fixtureRequests" : 3,
+  "embeddingInputs" : 1
+} ]

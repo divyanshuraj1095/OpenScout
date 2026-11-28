@@ -15,3 +15,7 @@ PostgreSQL provides transactions and durable job state. Flyway owns DDL and Hibe
 Student budget: target $0 incremental service spend on existing local hardware. Electricity and network usage vary. Use Compose for Postgres/pgvector, Redis, Ollama, Prometheus and Grafana as their phases arrive. Require explicit approval for paid resources. Free hosts may sleep or interrupt workers. Plan lease recovery, provider quota backoff and storage headroom for two vector generations. Capacity-test before offering persistent indexing.
 Use one public HTTPS origin with a trusted /api reverse proxy from Vercel to Render. Keep Set-Cookie host-only, bypass shared caching and forward Cookie, Origin, CSRF headers and Set-Cookie intact. Direct vercel.app to onrender.com cookies are third-party and may be blocked even with SameSite=None, Secure and credentialed CORS. Alternatively use same-site custom HTTPS subdomains and exact CORS. Verify login, CSRF, expiry and logout in browsers that block third-party cookies before release. See https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/Third-party_cookies
 
+
+## Phase 4 implementation
+
+The Spring process runs two polling lanes by default. Each lane claims one PostgreSQL job, fetches anonymous GitHub data by numeric repository ID and persists isolated staging rows. Readers pin a compatible active version by UUID. Promotion and job completion share one transaction. The packaged sample and its fixed-source endpoints continue using their original tables. See [Phase 4 design and evidence](PHASE_4.md).

@@ -175,6 +175,42 @@ paths:
         '404': {description: Repository inaccessible}
         '409': {description: Sample index missing}
         '503': {description: Provider unavailable}
+  /api/v1/repositories/{repo}/indexes:
+    parameters:
+      - {in: path, name: repo, required: true, schema: {type: integer, format: int64}}
+    post:
+      summary: Enqueue or join a shared indexing job
+      security: [{session: []}]
+      parameters: [{$ref: '#/components/parameters/CSRF'}]
+      responses:
+        '202': {description: Job identifier and authenticated status URL}
+  /api/v1/repositories/{repo}/jobs/{id}:
+    parameters:
+      - {in: path, name: repo, required: true, schema: {type: integer, format: int64}}
+      - {in: path, name: id, required: true, schema: {type: string, format: uuid}}
+    get:
+      security: [{session: []}]
+      responses:
+        '200': {description: State, files processed, manifest total and safe error code}
+        '404': {description: Missing or inaccessible job}
+  /api/v1/repositories/{repo}/indexes/active/questions:
+    parameters:
+      - {in: path, name: repo, required: true, schema: {type: integer, format: int64}}
+    post:
+      security: [{session: []}]
+      parameters: [{$ref: '#/components/parameters/CSRF'}]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [question]
+              properties:
+                question: {type: string, minLength: 1, maxLength: 1000}
+      responses:
+        '200': {description: Answer envelope pinned to the selected active generation}
+        '409': {description: Compatible generation unavailable}
 components:
   parameters:
     CSRF: {in: header, name: X-CSRF-TOKEN, required: true, schema: {type: string}}

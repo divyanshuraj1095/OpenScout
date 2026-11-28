@@ -13,6 +13,8 @@ import tools.jackson.databind.ObjectMapper;
 
 interface Encoder {
     float[] encode(String text);
+    default List<float[]> batch(List<String> inputs){return inputs.stream().map(this::encode).toList();}
+    default boolean supportsBatch(){return false;}
 }
 interface Generator {
     String generate(String instructions,String input);
@@ -22,6 +24,11 @@ interface Generator {
 class SpringEncoder implements Encoder {
     private final EmbeddingModel model;
     SpringEncoder(EmbeddingModel model){this.model=model;}
+    public boolean supportsBatch(){return true;}
+    public List<float[]> batch(List<String> inputs){
+        try{return model.embed(inputs);}
+        catch(RuntimeException ex){throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"Embedding unavailable");}
+    }
     public float[] encode(String text){
         try {return model.embed(text);}
         catch(RuntimeException ex){throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"Embedding unavailable");}

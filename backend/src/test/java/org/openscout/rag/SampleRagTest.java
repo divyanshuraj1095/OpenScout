@@ -21,6 +21,7 @@ class SampleRagTest {
     static final PostgreSQLContainer pg=new PostgreSQLContainer(DockerImageName.parse("pgvector/pgvector:0.8.1-pg17")
         .asCompatibleSubstituteFor("postgres")).withDatabaseName("openscout_dev");
     @DynamicPropertySource static void properties(DynamicPropertyRegistry r){
+        r.add("index.worker.enabled",()->false);
         pg.start();
         r.add("spring.datasource.url",pg::getJdbcUrl);r.add("spring.datasource.username",pg::getUsername);
         r.add("spring.datasource.password",pg::getPassword);
@@ -299,5 +300,251 @@ class SampleRagTest {
             long start=System.nanoTime();var answer=rag.ask(user,repo,c[3]);trace.put("elapsedMs",ms(start));
             trace.put("response",answer);results.add(Map.copyOf(trace));write("rag",results);
         }
+    }
+    @Autowired IndexQueue queue;
+    @Autowired IndexWorker worker;
+    static class IndexFixture extends IndexSource {
+        int revision=1,requests;
+        IndexFixture(ObjectMapper json){super(json);}
+        @Override String head(long repo){requests++;return Integer.toString(revision).repeat(40);}
+        static String text(String path,int revision){return "Documentation for "+path+" revision "+revision+".";}
+        @Override List<File> files(long repo,String commit,int max){
+            requests++;
+            return java.util.stream.IntStream.range(0,8).mapToObj(n->{
+                String path="doc"+n+".md";int rev=n==7?revision:1;
+                return new File(path,("%040x".formatted(n*10+rev)),text(path,rev).length());
+            }).toList();
+        }
+        @Override String content(long repo,File file){requests++;return text(file.path(),file.path().equals("doc7.md")?revision:1);}
+    }
+    @Test @EnabledIfEnvironmentVariable(named="INDEX_BENCH",matches=".+")
+    void indexingBenchmark() throws Exception {
+        var source=new IndexFixture(json);
+        String mode=System.getenv("INDEX_BENCH");
+        int[] counts={0,0};
+        Encoder counted=new Encoder(){
+            public float[] encode(String text){throw new AssertionError("Unexpected call");}
+            public boolean supportsBatch(){return true;}
+            public List<float[]> batch(List<String> inputs){
+                counts[0]++;counts[1]+=inputs.size();return live.encoder.batch(inputs);
+            }
+        };
+        var measured=new SampleRag(db,tx,counted,live.generator,visibility,json,live.space,live.threshold);
+        var testWorker=new IndexWorker(queue,measured,source);
+        testWorker.incremental=mode.startsWith("incremental");
+        testWorker.batchSize=mode.endsWith("batch")?8:1;
+        testWorker.fileBytes=65536;testWorker.maxFiles=100;testWorker.maxBytes=1048576;
+        testWorker.maxChunks=512;testWorker.maxCalls=512;testWorker.chunkBytes=1536;testWorker.overlap=1;
+        var rows=new ArrayList<Object>();
+        for(int rev=1;rev<=2;rev++){
+            source.revision=rev;source.requests=0;counts[0]=0;counts[1]=0;
+            long start=System.nanoTime();UUID id=queue.enqueue(user,repo);
+            testWorker.process(queue.claim().orElseThrow());
+            double elapsed=ms(start);
+            assertEquals(id,testWorker.active(repo));
+            long bytes=db.sql("SELECT sum(pg_column_size(embedding)) FROM repository_vectors WHERE version=?").param(id).query(Long.class).single();
+            rows.add(Map.of("revision",rev,"elapsedMs",elapsed,"fixtureRequests",source.requests,"vectorBytes",bytes,"providerCalls",counts[0],"embeddingInputs",counts[1]));
+        }
+        Files.writeString(Path.of("../benchmarks/phase4/"+System.getenv("INDEX_BENCH")+".json"),json.writerWithDefaultPrettyPrinter().writeValueAsString(rows));
+    }
+    @Test @EnabledIfEnvironmentVariable(named="INDEX_LIVE",matches="true")
+    void livePublicIndex() throws Exception {
+        long github=1296269L;
+        addRepo(github);
+        // Use the real metadata authority for this smoke test despite the default test double.
+        var upstream=new IndexSource(json);
+        org.mockito.Mockito.doAnswer(inv->{
+            var meta=upstream.get(github,"");
+            assertEquals(github,meta.get("id").asLong());assertFalse(meta.get("private").asBoolean());
+            assertEquals("public",meta.get("visibility").asString());return null;
+        }).when(visibility).requirePublic(github);
+        var id=queue.enqueue(user,github);
+        worker.process(queue.claim().orElseThrow());
+        var record=db.sql("SELECT commit_sha,completed,total,status FROM indexing_jobs WHERE id=?").param(id).query().singleRow();
+        assertEquals("succeeded",record.get("status"));
+        int chunks=db.sql("SELECT count(*) FROM repository_vectors WHERE version=?").param(id).query(Integer.class).single();
+        assertTrue(chunks>0);
+        Files.writeString(Path.of("../benchmarks/phase4/live.json"),json.writeValueAsString(Map.of("repositoryId",github,"job",record,"chunks",chunks)));
+    }
+    @Test void duplicateRequestsClaimsRecoveryAndFencing() throws Exception {
+        try(var executor=java.util.concurrent.Executors.newFixedThreadPool(4)){
+            var gate=new java.util.concurrent.CyclicBarrier(4);
+            var futures=new ArrayList<java.util.concurrent.Future<UUID>>();
+            for(int i=0;i<4;i++) futures.add(executor.submit(()->{gate.await();return queue.enqueue(user,repo);}));
+            var ids=new HashSet<UUID>();for(var f:futures) ids.add(f.get());
+            assertEquals(1,ids.size());
+            var first=executor.submit(queue::claim);var second=executor.submit(queue::claim);
+            var claimed=java.util.stream.Stream.of(first.get(),second.get()).flatMap(Optional::stream).toList();
+            assertEquals(1,claimed.size());var old=claimed.getFirst();
+            db.sql("UPDATE indexing_jobs SET lease_until=now()-interval '1 second' WHERE id=?").param(old.id()).update();
+            long start=System.nanoTime();var fresh=queue.claim().orElseThrow();double recoveryMs=ms(start);
+            assertEquals(old.id(),fresh.id());assertTrue(fresh.fence()>old.fence());
+            assertThrows(IllegalStateException.class,()->queue.guarded(old,()->fail("stale write")));
+            queue.fail(fresh,true,5);
+            assertTrue(queue.claim().isEmpty());assertEquals(old.id(),queue.enqueue(user,repo));
+            db.sql("UPDATE indexing_jobs SET ready_at=now() WHERE id=?").param(old.id()).update();
+            queue.fail(queue.claim().orElseThrow(),false,0);
+            assertNotEquals(old.id(),queue.enqueue(user,repo));
+            queue.fail(queue.claim().orElseThrow(),false,0);
+            if("true".equals(System.getenv("INDEX_RECOVERY_EVIDENCE")))
+                Files.writeString(Path.of("../benchmarks/phase4/recovery.json"),json.writeValueAsString(Map.of("expiredToClaimMs",recoveryMs,"leaseSeconds",90,"pollSeconds",2)));
+        }
+    }
+    @Test void generationsAndAvailability() throws Exception {
+        var paused=new java.util.concurrent.CountDownLatch(1);
+        var resume=new java.util.concurrent.CountDownLatch(1);
+        var fixture=new IndexFixture(json){
+            @Override String content(long id,File file){
+                if(revision==2){
+                    paused.countDown();
+                    try{if(!resume.await(20,java.util.concurrent.TimeUnit.SECONDS)) throw new IllegalStateException("Fixture timeout");}
+                    catch(InterruptedException e){throw new IllegalStateException(e);}
+                }
+                return super.content(id,file);
+            }
+        };
+        var calls=new java.util.concurrent.atomic.AtomicInteger();
+        Generator echo=(system,input)->{
+            var hit=json.readTree(input).get("evidence").get(0);
+            return json.writeValueAsString(Map.of("chunkId",hit.get("chunkId").asString(),"quote",hit.get("text").asString()));
+        };
+        var scoped=new SampleRag(db,tx,text->{calls.incrementAndGet();return axis(1);},echo,visibility,json,"fixture",0.5);
+        var runner=new IndexWorker(queue,scoped,fixture);
+        runner.maxCalls=16;runner.maxFiles=16;runner.maxBytes=8192;runner.fileBytes=1024;runner.chunkBytes=512;runner.maxChunks=16;
+        UUID first=queue.enqueue(user,repo);runner.process(queue.claim().orElseThrow());assertEquals(8,calls.get());
+        UUID next=queue.enqueue(user,repo);
+        var lease=queue.claim().orElseThrow();
+        fixture.revision=2;
+        var processing=java.util.concurrent.CompletableFuture.runAsync(()->{
+            try{runner.process(lease);}catch(Exception e){throw new RuntimeException(e);}
+        });
+        assertTrue(paused.await(10,java.util.concurrent.TimeUnit.SECONDS));
+        long start=System.nanoTime();
+        var before=scoped.askIndexed(user,repo,"What documentation is indexed?");
+        double availabilityMs=ms(start);
+        assertEquals(first.toString(),before.indexVersion());assertTrue(before.grounded());
+        assertThrows(ResponseStatusException.class,()->scoped.askIndexed(UUID.randomUUID(),repo,"question"));
+        addRepo(repo+1);assertThrows(ResponseStatusException.class,()->scoped.askIndexed(user,repo+1,"question"));
+        resume.countDown();processing.get(20,java.util.concurrent.TimeUnit.SECONDS);
+        assertEquals(10,calls.get());assertEquals(next,runner.active(repo));
+        runner.chunkBytes=256;queue.enqueue(user,repo);runner.process(queue.claim().orElseThrow());assertEquals(18,calls.get());
+        UUID stable=runner.active(repo);
+        runner.maxFiles=1;queue.enqueue(user,repo);var bad=queue.claim().orElseThrow();
+        assertThrows(IllegalArgumentException.class,()->runner.process(bad));queue.fail(bad,false,0);
+        assertEquals(stable,runner.active(repo));
+        org.mockito.Mockito.doThrow(new ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND)).when(visibility).requirePublic(repo);
+        assertThrows(ResponseStatusException.class,()->scoped.askIndexed(user,repo,"question"));
+        if("true".equals(System.getenv("INDEX_RECOVERY_EVIDENCE")))
+            Files.writeString(Path.of("../benchmarks/phase4/availability.json"),json.writeValueAsString(Map.of("oldGenerationAnswerMs",availabilityMs,"grounded",before.grounded())));
+    }
+    @Test void exclusionsOverlapAndRetryAfter() throws Exception {
+        for(String path:List.of(".env","docs/.hidden.md","docs/private-key.md","build/out.md","vendor/foo.md","credentials.txt","blob.png","../readme.md"))
+            assertFalse(IndexSource.eligible(path));
+        assertTrue(IndexSource.eligible("docs/README.md"));
+        var runner=new IndexWorker(queue,live,new IndexFixture(json));runner.chunkBytes=7;runner.overlap=1;
+        var parts=runner.split("one\ntwo\nend");
+        assertEquals(2,parts.size());assertEquals(2,parts.getLast().start());assertEquals(3,parts.getLast().end());
+        assertEquals(15,runner.source.retryAfter("15"));
+    }
+    @Test void httpRateLimitAndTruncatedTree() throws Exception {
+        var server=com.sun.net.httpserver.HttpServer.create(new java.net.InetSocketAddress("127.0.0.1",0),0);
+        var first=new java.util.concurrent.atomic.AtomicBoolean(true);
+        server.createContext("/",e->{
+            boolean limited=first.getAndSet(false);
+            if(limited)e.getResponseHeaders().set("Retry-After","7");
+            byte[] body="{\"tree\":[],\"truncated\":true}".getBytes(java.nio.charset.StandardCharsets.UTF_8);
+            e.sendResponseHeaders(limited?429:200,body.length);
+            try(var out=e.getResponseBody()){out.write(body);}
+        });server.start();
+        try{
+            var github=new IndexSource(json,java.net.URI.create("http://127.0.0.1:"+server.getAddress().getPort()));
+            assertEquals(7,assertThrows(IndexSource.Retry.class,()->github.head(repo)).seconds);
+            assertThrows(IllegalArgumentException.class,()->github.files(repo,"1".repeat(40),1024));
+        } finally{server.stop(0);}
+    }
+    @Test void movesDeletionsAndModelChange() throws Exception {
+        var fixture=new IndexFixture(json){
+            @Override List<File> files(long id,String sha,int limit){
+                var all=super.files(id,sha,limit);
+                if(revision==1)return all;
+                var old=all.getFirst();
+                return List.of(new File("moved.md",old.sha(),old.size()));
+            }
+        };
+        var calls=new java.util.concurrent.atomic.AtomicInteger();
+        var runner=new IndexWorker(queue,new SampleRag(db,tx,t->{calls.incrementAndGet();return axis(1);},live.generator,visibility,json,"model-a",0.5),fixture);
+        runner.maxCalls=16;runner.maxFiles=16;runner.maxBytes=8192;runner.fileBytes=1024;runner.chunkBytes=512;runner.maxChunks=16;
+        queue.enqueue(user,repo);runner.process(queue.claim().orElseThrow());assertEquals(8,calls.get());
+        fixture.revision=2;
+        queue.enqueue(user,repo);runner.process(queue.claim().orElseThrow());assertEquals(8,calls.get());
+        UUID active=runner.active(repo);
+        assertEquals(List.of("moved.md"),db.sql("SELECT path FROM repository_vectors WHERE version=?").param(active).query(String.class).list());
+        var incompatible=new SampleRag(db,tx,t->{calls.incrementAndGet();return axis(1);},live.generator,visibility,json,"model-b",0.5);
+        assertEquals(409,assertThrows(ResponseStatusException.class,()->incompatible.askIndexed(user,repo,"question")).getStatusCode().value());
+        var replacement=new IndexWorker(queue,incompatible,fixture);
+        replacement.maxCalls=16;replacement.maxFiles=16;replacement.maxBytes=8192;replacement.fileBytes=1024;replacement.chunkBytes=512;replacement.maxChunks=16;
+        queue.enqueue(user,repo);replacement.process(queue.claim().orElseThrow());assertEquals(9,calls.get());
+    }
+    @Test void jobStatusRequiresRepositoryAndMembership(){
+        var api=new IndexController(live,queue);
+        var jwt=org.springframework.security.oauth2.jwt.Jwt.withTokenValue("fixture").header("alg","none").subject(user.toString()).build();
+        var job=UUID.fromString(api.request(jwt,repo).get("jobId"));
+        assertEquals("queued",api.status(jwt,repo,job).get("status"));
+        addRepo(repo+1);
+        assertThrows(ResponseStatusException.class,()->api.status(jwt,repo+1,job));
+        var other=org.springframework.security.oauth2.jwt.Jwt.withTokenValue("fixture").header("alg","none").subject(UUID.randomUUID().toString()).build();
+        assertThrows(ResponseStatusException.class,()->api.request(other,repo));
+        assertThrows(ResponseStatusException.class,()->api.status(other,repo,job));
+        queue.fail(queue.claim().orElseThrow(),false,0);
+    }
+    @Test @EnabledIfEnvironmentVariable(named="INDEX_SHARING",matches="true")
+    void sharedIndexBenchmark() throws Exception {
+        UUID other=UUID.randomUUID();
+        db.sql("INSERT INTO accounts(id,name,email,password_hash) VALUES(?,?,?,?)").params(other,"fixture",other+"@example.org","unused").update();
+        addRepo(repo+1);addRepo(repo+2);
+        var fixture=new IndexFixture(json);
+        var runner=new IndexWorker(queue,live,fixture);
+        runner.maxCalls=16;runner.maxFiles=16;runner.maxBytes=8192;runner.fileBytes=1024;runner.chunkBytes=512;runner.maxChunks=16;
+        db.sql("INSERT INTO user_repositories VALUES(?,?),(?,?)").params(other,repo+1,other,repo+2).update();
+        long start=System.nanoTime();
+        queue.enqueue(user,repo);runner.process(queue.claim().orElseThrow());
+        queue.enqueue(other,repo+1);runner.process(queue.claim().orElseThrow());
+        var separate=Map.of("elapsedMs",ms(start),"fixtureRequests",fixture.requests,"jobs",2);
+        fixture.requests=0;start=System.nanoTime();
+        UUID shared=queue.enqueue(user,repo+2);assertEquals(shared,queue.enqueue(other,repo+2));
+        runner.process(queue.claim().orElseThrow());
+        var together=Map.of("elapsedMs",ms(start),"fixtureRequests",fixture.requests,"jobs",1);
+        Files.writeString(Path.of("../benchmarks/phase4/sharing.json"),json.writeValueAsString(Map.of("separate",separate,"shared",together)));
+    }
+    @Test void failedPromotionRollsBackRetirement() throws Exception {
+        var scoped=new SampleRag(db,tx,t->axis(0),live.generator,visibility,json,"fixture",0.5);
+        var runner=new IndexWorker(queue,scoped,new IndexFixture(json));
+        runner.maxCalls=16;runner.maxFiles=16;runner.maxBytes=8192;runner.fileBytes=1024;runner.chunkBytes=512;runner.maxChunks=16;
+        UUID stable=queue.enqueue(user,repo);runner.process(queue.claim().orElseThrow());
+        UUID staged=queue.enqueue(user,repo);var lease=queue.claim().orElseThrow();
+        org.mockito.Mockito.doAnswer(call->{
+            // Simulate a bad progress record just before publication on the no-new-embeddings path.
+            db.sql("UPDATE indexing_jobs SET completed=0 WHERE id=? AND total>0 AND completed=total").param(staged).update();
+            return null;
+        }).when(visibility).requirePublic(repo);
+        assertThrows(IllegalStateException.class,()->runner.process(lease));
+        assertEquals(stable,runner.active(repo));
+        queue.fail(lease,false,0);
+        assertEquals(0,db.sql("SELECT count(*) FROM repository_indexes WHERE version=?").param(staged).query(Integer.class).single());
+    }
+    @Test void backgroundWorkerConsumesAcceptedJob() throws Exception {
+        var api=new IndexController(live,queue);
+        var jwt=org.springframework.security.oauth2.jwt.Jwt.withTokenValue("fixture").header("alg","none").subject(user.toString()).build();
+        var id=UUID.fromString(api.request(jwt,repo).get("jobId"));
+        var scoped=new SampleRag(db,tx,t->axis(1),live.generator,visibility,json,"fixture",0.5);
+        var runner=new IndexWorker(queue,scoped,new IndexFixture(json));
+        runner.maxCalls=16;runner.maxFiles=16;runner.maxBytes=8192;runner.fileBytes=1024;runner.chunkBytes=512;runner.maxChunks=16;
+        var scheduler=new IndexScheduler(runner,2);
+        try{
+            scheduler.start();
+            long deadline=System.nanoTime()+java.time.Duration.ofSeconds(20).toNanos();
+            while(System.nanoTime()<deadline && !"succeeded".equals(api.status(jwt,repo,id).get("status"))) Thread.sleep(100);
+            assertEquals(id,runner.active(repo));
+        } finally{scheduler.stop();runner.stopHeartbeat();}
     }
 }
